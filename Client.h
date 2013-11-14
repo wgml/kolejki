@@ -7,6 +7,7 @@
 
 #ifndef KLIENT_H_
 #define KLIENT_H_
+#include "nrand.h"
 
 class Client
 {

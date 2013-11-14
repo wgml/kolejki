@@ -8,10 +8,16 @@
 
 Client::Client(void)
 {
-	this->serviceTime = 0;
-	this->multiplier = 0;
+	/*
+	 * tworzy obiekt z losowymi wartosciami
+	 */
+	this->serviceTime = nrand(10,3);
+	this->multiplier = nrand(1,0.3);
 }
 
-
+unsigned Client::getServiceTime(void)
+{
+	return (unsigned)(*this->serviceTime * this->multiplier);
+}
 
 
