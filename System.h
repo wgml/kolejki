@@ -8,7 +8,7 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 #include "Queue.h"
-#include <list>
+#include <vector>
 
 class System
 {
@@ -21,8 +21,13 @@ public:
 	void simulate(void);
 	void update(unsigned = 1);
 
+	unsigned numQueues(void);
+	STATUS queueStatus(unsigned);
+	unsigned getQueueLength(unsigned);
+	unsigned getQueueTime(unsigned);
+
 private:
-	std::list<Queue> queues;
+	std::vector<Queue> queues;
 };
 
 

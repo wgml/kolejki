@@ -23,7 +23,36 @@ System::System(const System & s)
 
 void System::update(unsigned ticks)
 {
-	for(std::list<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
+	for(std::vector<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
 		if((*it).getStatus() == OPEN)
 			(*it).update(ticks);
+}
+
+unsigned System::numQueues(void)
+{
+	return this->queues.size();
+}
+
+STATUS System::queueStatus(unsigned n)
+{
+	if(n >= this->queues.size())
+		return NO_EXIST;
+	else
+		return this->queues[n].getStatus();
+}
+
+unsigned System::getQueueLength(unsigned q)
+{
+	if(q >= this->queues.size())
+		return 0;
+	else
+		return this->queues[q].getLength();
+}
+
+unsigned System::getQueueTime(unsigned q)
+{
+	if(q >= this->queues.size())
+		return 0;
+	else
+		return this->queues[q].getTotalTime();
 }

@@ -5,7 +5,7 @@
  *      Author: vka
  */
 
-enum STATUS { OPEN, CLOSED, WILL_CLOSE};
+enum STATUS { OPEN, CLOSED, WILL_CLOSE, NO_EXIST};
 
 //TODO Zaokraglanie czasu
 #ifndef KOLEJKA_H_
