@@ -11,12 +11,10 @@
 
 #include <queue>
 #include "Client.h"
-#include <algorithm> //for_each
-#include <iostream> //todo wywalic
 class Queue
 {
 public:
-	Queue(void) : totalNeededTime(0) {};
+	Queue(void) : totalNeededTime(0), currentClientTime(0) {};
 	~Queue(void) {};
 
 	void update(unsigned ticks = 1);

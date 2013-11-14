@@ -64,13 +64,13 @@ void Queue::update(unsigned ticks)
 		{
 			this->currentClientTime += ticks;
 			this->totalNeededTime -= ticks;
-			ticks = 0;
+			break;
 		}
 		else
 		{
-			this->currentClientTime = 0;
 			this->totalNeededTime -= ticks;
-			ticks -= timeNeeded;
+			ticks -= timeNeeded - currentClientTime;
+			this->currentClientTime = 0;
 			this->queue.pop();
 		}
 	}
