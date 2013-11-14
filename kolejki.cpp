@@ -11,5 +11,6 @@ using namespace std;
 
 int main() {
 	cout << "" << endl; // prints 
+	cout << "test" <<endl;
 	return 0;
 }
