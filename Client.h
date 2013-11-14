@@ -8,12 +8,16 @@
 #ifndef KLIENT_H_
 #define KLIENT_H_
 #include "nrand.h"
-
+#include <cmath> //ceil
 class Client
 {
 public:
-	Client(void);
+	Client(void) : serviceTime(nrand(10, 3)), multiplier(nrand(1, 0.3)) {};
+	Client(int i) : serviceTime(i), multiplier(1) {};//TODO do testow
+	~Client(void) {};
 	unsigned getServiceTime(void);
+
+	Client & operator = (const Client &);
 
 private:
 	unsigned serviceTime;

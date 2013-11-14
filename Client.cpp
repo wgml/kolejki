@@ -6,18 +6,16 @@
  */
 #include "Client.h"
 
-Client::Client(void)
-{
-	/*
-	 * tworzy obiekt z losowymi wartosciami
-	 */
-	this->serviceTime = nrand(10,3);
-	this->multiplier = nrand(1,0.3);
-}
-
 unsigned Client::getServiceTime(void)
 {
-	return (unsigned)(*this->serviceTime * this->multiplier);
+	return ceil(this->serviceTime * this->multiplier);
+}
+
+Client & Client::operator = (const Client & c)
+{
+	this->multiplier = c.multiplier;
+	this->serviceTime = c.serviceTime;
+	return (*this);
 }
 
 
