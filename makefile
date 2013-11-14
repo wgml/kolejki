@@ -6,7 +6,7 @@ TARGET=foo
 all: old $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
+	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS)  -o $@
 
 .PHONY: clean
 

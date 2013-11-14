@@ -7,11 +7,9 @@
 //============================================================================
 
 #include <iostream>
-#include "Klient.h"
-
 using namespace std;
 
 int main() {
-	cout << "" << endl; // prints 
+
 	return 0;
 }

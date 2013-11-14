@@ -12,10 +12,11 @@ class Client
 {
 public:
 	Client(void);
+	unsigned getServiceTime(void);
 
 private:
 	unsigned serviceTime;
-
+	double multiplier;
 };
 
 
