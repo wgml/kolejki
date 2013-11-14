@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : kolejki.cpp
+// Name        : main.cpp
 // Author      : vka
 // Version     :
 // Copyright   : 
@@ -7,6 +7,8 @@
 //============================================================================
 
 #include <iostream>
+#include "Klient.h"
+
 using namespace std;
 
 int main() {
