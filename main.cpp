@@ -7,22 +7,12 @@
 //============================================================================
 
 #include <iostream>
-#include "Queue.h"
-#include "Client.h"
+#include "System.h"
 using namespace std;
 
 int main() {
+	System s;
 
-	Queue kolejka;
-	Client a(2);
-	Client b(2);
-	kolejka.add(a);
-	kolejka.add(b);
-	cout << kolejka.getLength() << ":" << kolejka.getTotalTime() << endl;
-	while(!kolejka.isEmpty())
-	{
-		kolejka.update();
-		cout << kolejka.getLength() << ":" << kolejka.getTotalTime() << endl;
-	}
+
 	return 0;
 }

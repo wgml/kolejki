@@ -7,8 +7,23 @@
 
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
+#include "Queue.h"
+#include <list>
 
+class System
+{
+public:
+	System(void);
+	System(unsigned);
+	System(const System &);
+	~System() {};
 
+	void simulate(void);
+	void update(unsigned = 1);
+
+private:
+	std::list<Queue> queues;
+};
 
 
 #endif /* SYSTEM_H_ */

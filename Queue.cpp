@@ -6,6 +6,34 @@
  */
 #include "Queue.h"
 
+Queue::Queue(STATUS s)
+{
+	this->currentClientTime = 0;
+	this->totalNeededTime = 0;
+
+	if(s == OPEN)
+		this->status = OPEN;
+	else
+		this->status = CLOSED;
+}
+
+Queue::Queue(Client c)
+{
+	this->currentClientTime = 0;
+	this->totalNeededTime = c.getServiceTime();
+	this->status = OPEN;
+	this->queue.push(c);
+}
+
+Queue & Queue::operator = (const Queue & q)
+{
+	this->currentClientTime = q.currentClientTime;
+	this->totalNeededTime = q.totalNeededTime;
+	this->queue = q.queue;
+
+	return (*this);
+}
+
 unsigned Queue::getLength()
 {
 	/*
@@ -20,6 +48,11 @@ unsigned Queue::getTotalTime()
 	 * zwraca calkowity czas (ticki) do wyzerowania kolejki
 	 */
 	return this->totalNeededTime;
+}
+
+STATUS Queue::getStatus(void)
+{
+	return this->status;
 }
 
 bool Queue::isEmpty()
