@@ -9,7 +9,6 @@
 #define KLIENT_H_
 #include "nrand.h"
 #include <cmath> //ceil
-#include <iostream>
 class Client
 {
 public:
