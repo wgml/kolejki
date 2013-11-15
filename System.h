@@ -26,8 +26,14 @@ public:
 	unsigned getQueueLength(unsigned);
 	unsigned getQueueTime(unsigned);
 
+	void start(void);
+	void stop(void);
+
+	bool isWorking(void);
+
 private:
 	std::vector<Queue> queues;
+	bool working;
 };
 
 

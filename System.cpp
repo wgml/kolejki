@@ -9,16 +9,19 @@
 System::System(void)
 {
 	this->queues.insert(this->queues.begin(), 1, Queue());
+	this->working = false;
 }
 
 System::System(unsigned i)
 {
 	this->queues.insert(this->queues.begin(), i, Queue());
+	this->working = false;
 }
 
 System::System(const System & s)
 {
 	this->queues = s.queues;
+	this->working = s.working;
 }
 
 void System::update(unsigned ticks)
@@ -55,4 +58,29 @@ unsigned System::getQueueTime(unsigned q)
 		return 0;
 	else
 		return this->queues[q].getTotalTime();
+}
+
+bool System::isWorking(void)
+{
+	return this->working;
+}
+
+void System::start(void)
+{
+	this->working = true;
+	this->simulate();
+}
+
+void System::stop(void)
+{
+	this->working = false;
+}
+
+void System::simulate(void)
+{
+	if(!this->working)
+		return;
+	else
+		return;
+	//TODO
 }
