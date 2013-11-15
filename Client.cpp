@@ -14,6 +14,9 @@ Client::Client(const Client & c)
 
 unsigned Client::getServiceTime(void)
 {
+	/*
+	 * zwraca calkowity czas potrzebny na pozbycie sie z kolejki
+	 */
 	return ceil(this->serviceTime * this->multiplier);
 }
 

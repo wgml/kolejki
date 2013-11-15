@@ -13,7 +13,7 @@
 class Client
 {
 public:
-	Client(void) : serviceTime(nrand(10, 3)), multiplier(nrand(1, 0.3)) {};
+	Client(void) : serviceTime(nrand(10, 2)), multiplier(1) {};
 	Client(int i) : serviceTime(i), multiplier(1) {};//TODO do testow
 	Client(const Client &);
 	~Client(void) {};

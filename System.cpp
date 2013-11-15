@@ -5,7 +5,7 @@
  *      Author: vka
  */
 #include "System.h"
-#include <climits> //MAX_INT
+
 System::System(void)
 {
 	/*
@@ -14,6 +14,8 @@ System::System(void)
 	 */
 	this->queues.insert(this->queues.begin(), 1, Queue(CLOSED));
 	this->working = false;
+
+	this->_constNewClients = 1.5;
 }
 
 System::System(unsigned i)
@@ -25,6 +27,8 @@ System::System(unsigned i)
 	 */
 	this->queues.insert(this->queues.begin(), i, Queue(CLOSED));
 	this->working = false;
+
+	this->_constNewClients = 1.5;
 }
 
 System::System(const System & s)
@@ -34,6 +38,8 @@ System::System(const System & s)
 	 */
 	this->queues = s.queues;
 	this->working = s.working;
+
+	this->_constNewClients = s._constNewClients;
 }
 
 void System::update(unsigned ticks)
@@ -124,14 +130,14 @@ void System::simulate(bool oneTick)
 	 * sprawdza, czy system jest w stanie open
 	 * jesli tak, do poki stan systemu sie nie zmieni,
 	 * przeprowadza symulacje.
-	 * Najpierw losuje //TODO liczbe nowych klientow,
+	 * Najpierw losuje TODO liczbe nowych klientow,
 	 * z prawdopodobienstwem __probOfNewClient.
-	 * Nastepnie przydziela ich do najlepszych kolejek. //todo najlepszych?
+	 * Nastepnie przydziela ich do najlepszych kolejek. todo najlepszych?
 	 * decyduje, czy nie mozna zamknac nadmiaru kolejek
-	 * jesli //todo iloscCzekajacych/iloscOtwartychKolejek jest mniejsza od jakiegos consta.
+	 * jesli todo iloscCzekajacych/iloscOtwartychKolejek jest mniejsza od jakiegos consta.
 	 * Jesli oneTick == true, wykonuje tylko jeden update i przerywa.
 	 * Przydatne by zczytywac dane symulacji na biezaco.
-	 * //todo http://www.willa.me/2013/11/the-six-most-common-species-of-code.html //todo? //todo
+	 * todo http://www.willa.me/2013/11/the-six-most-common-species-of-code.html todo? todo
 	 *
 	 */
 	if(!this->working)
@@ -139,7 +145,23 @@ void System::simulate(bool oneTick)
 
 	while(this->working)
 	{
+		/*
+		 * losowanie lowych klientow
+		 */
+
+		unsigned newClients = urand() * this->_constNewClients;
+		for(int i = 0; i < newClients; i++)
+		{
+			unsigned k = this->chooseBestQueue();
+			this->queues[k].add(Client());
+		}
+
 		this->update();
+
+		/*
+		 * updejt listy kolejek
+		 * TODO
+		 */
 		if(oneTick)
 			break;
 	}

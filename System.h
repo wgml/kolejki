@@ -4,12 +4,12 @@
  *  Created on: 14 lis 2013
  *      Author: vka
  */
-
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
-#include "Queue.h"
 #include <vector>
-
+#include <climits> //MAX_INT
+#include "Queue.h"
+#include "urand.h" //do losowania ilosci nowych klientow
 class System
 {
 public:
@@ -33,10 +33,9 @@ public:
 private:
 	std::vector<Queue> queues;
 	bool working;
-	double _probOfNewClient;
+	double _constNewClients;
 	void update(unsigned = 1);
 	unsigned chooseBestQueue(void);
 };
-
 
 #endif /* SYSTEM_H_ */

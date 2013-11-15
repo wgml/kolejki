@@ -17,8 +17,9 @@ void show(System s)
 	cout << "Kolejek: " << s.numQueues() << endl;
 
 		for(int e = 0; e < s.numQueues(); e++)
-			if(s.queueStatus(e) == OPEN)
-				cout << "Status kolejki #" << e+1 << ": open" << ", oczekuje: " << s.getQueueLength(e) << endl;
+			if(s.getQueueStatus(e) == OPEN)
+				cout << "Status kolejki #" << e+1 << ": open" << ", oczekuje: " << s.getQueueLength(e)
+					<< ", czas: " << s.getQueueTime(e) << endl;
 			else
 				cout << "Status kolejki #" << e+1 << ": closed" << endl;
 }
@@ -36,4 +37,16 @@ int main() {
 	s.simulate();
 
 	show(s);
+
+	s.start();
+
+	s.simulate();
+
+	show(s);
+	int i = 100;
+	while (i--)
+	{
+		s.simulate();
+		show(s);
+	}
 }
