@@ -21,7 +21,7 @@ public:
 	void simulate(bool = true);
 
 	unsigned numQueues(void);
-	STATUS queueStatus(unsigned);
+	STATUS getQueueStatus(unsigned);
 	unsigned getQueueLength(unsigned);
 	unsigned getQueueTime(unsigned);
 	void start(void);

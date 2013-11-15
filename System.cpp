@@ -5,7 +5,7 @@
  *      Author: vka
  */
 #include "System.h"
-
+#include <climits> //MAX_INT
 System::System(void)
 {
 	/*
@@ -55,7 +55,7 @@ unsigned System::numQueues(void)
 	return this->queues.size();
 }
 
-STATUS System::queueStatus(unsigned n)
+STATUS System::getQueueStatus(unsigned n)
 {
 	/*
 	 * zwraca STATUS status wybranej kolejki
@@ -160,7 +160,15 @@ unsigned System::chooseBestQueue(void)
 	 * wybiera najlepsza kolejke
 	 * ze wszystkich dostepnych (otwartych)
 	 */
-
+	unsigned bestValue = UINT_MAX;
+	unsigned bestId = 0;
+	for(unsigned i = 0; i < this->numQueues(); i++)
+		if(this->getQueueStatus(i) == OPEN && this->getQueueLength(i) < bestValue)
+		{
+			bestId = i;
+			bestValue = this->getQueueLength(i);
+		}
+	return bestId;
 }
 
 unsigned System::numWorkingQueues(void)
