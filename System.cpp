@@ -15,7 +15,7 @@ System::System(void)
 	this->queues.insert(this->queues.begin(), 1, Queue(CLOSED));
 	this->working = false;
 
-	this->_constNewClients = 1.5;
+	this->_constNewClients = 3;
 }
 
 System::System(unsigned i)
@@ -28,7 +28,7 @@ System::System(unsigned i)
 	this->queues.insert(this->queues.begin(), i, Queue(CLOSED));
 	this->working = false;
 
-	this->_constNewClients = 1.5;
+	this->_constNewClients = 3;
 }
 
 System::System(const System & s)
@@ -153,7 +153,7 @@ void System::simulate(bool oneTick)
 		for(int i = 0; i < newClients; i++)
 		{
 			unsigned k = this->chooseBestQueue();
-			this->queues[k].add(Client());
+			this->queues[k].add(Client(5));//TODO na sztywno
 		}
 
 		this->update();
