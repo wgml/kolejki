@@ -11,7 +11,7 @@ $(TARGET): $(OBJECTS)
 .PHONY: clean
 
 old:
-	rm -f foo *.o
+	rm -f foo
 
 clean:
 	rm -f $(TARGET) $(OBJECTS)

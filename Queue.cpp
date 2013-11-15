@@ -69,6 +69,11 @@ void Queue::add(Client c)
 	this->totalNeededTime += c.getServiceTime();
 }
 
+void Queue::setStatus(STATUS s)
+{
+	this->status = s;
+}
+
 void Queue::update(unsigned ticks)
 {
 	/*unsigned timeNeeded = this->queue.front().getServiceTime();

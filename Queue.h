@@ -26,6 +26,7 @@ public:
 	unsigned getLength(void);
 	unsigned getTotalTime(void);
 	STATUS getStatus(void);
+	void setStatus(STATUS);
 	void add(Client);
 	bool isEmpty(void);
 private:

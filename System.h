@@ -18,22 +18,24 @@ public:
 	System(const System &);
 	~System() {};
 
-	void simulate(void);
-	void update(unsigned = 1);
+	void simulate(bool = true);
 
 	unsigned numQueues(void);
 	STATUS queueStatus(unsigned);
 	unsigned getQueueLength(unsigned);
 	unsigned getQueueTime(unsigned);
-
 	void start(void);
 	void stop(void);
-
 	bool isWorking(void);
+	void setQueueStatus(unsigned, STATUS);
+	unsigned numWorkingQueues(void);
 
 private:
 	std::vector<Queue> queues;
 	bool working;
+	double _probOfNewClient;
+	void update(unsigned = 1);
+	unsigned chooseBestQueue(void);
 };
 
 
