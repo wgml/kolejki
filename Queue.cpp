@@ -22,7 +22,7 @@ Queue::Queue(Client c)
 	this->currentClientTime = 0;
 	this->totalNeededTime = c.getServiceTime();
 	this->status = OPEN;
-	this->queue.push(c);
+	this->queue.push_back(c);
 }
 
 Queue & Queue::operator = (const Queue & q)
@@ -65,7 +65,7 @@ bool Queue::isEmpty()
 
 void Queue::add(Client c)
 {
-	this->queue.push(c);
+	this->queue.push_back(c);
 	this->totalNeededTime += c.getServiceTime();
 }
 
@@ -109,7 +109,7 @@ void Queue::update(unsigned ticks)
 			this->totalNeededTime -= ticks;
 			ticks -= timeNeeded - currentClientTime;
 			this->currentClientTime = 0;
-			this->queue.pop();
+			this->queue.pop_front();
 		}
 
 		/*zamyka kolejke, jesli miala sie zamknac

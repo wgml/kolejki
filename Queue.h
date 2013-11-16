@@ -11,7 +11,7 @@ enum STATUS { OPEN, CLOSED, WILL_CLOSE, NO_EXIST};
 #ifndef KOLEJKA_H_
 #define KOLEJKA_H_
 
-#include <queue>
+#include <deque>
 #include "Client.h"
 class Queue
 {
@@ -30,7 +30,7 @@ public:
 	void add(Client);
 	bool isEmpty(void);
 private:
-	std::queue<Client> queue;
+	std::deque<Client> queue;
 	unsigned totalNeededTime;
 	unsigned currentClientTime;
 	STATUS status;
