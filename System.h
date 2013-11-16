@@ -20,16 +20,16 @@ public:
 
 	void simulate(bool = true);
 
-	unsigned numQueues(void);
-	STATUS getQueueStatus(unsigned);
-	unsigned getQueueLength(unsigned);
-	unsigned getQueueTime(unsigned);
+	unsigned numQueues(void) const;
+	STATUS getQueueStatus(unsigned) const;
+	unsigned getQueueLength(unsigned) const;
+	unsigned getQueueTime(unsigned) const;
 	void start(void);
 	void stop(void);
-	bool isWorking(void);
+	bool isWorking(void) const;
 	void setQueueStatus(unsigned, STATUS);//todo private
-	unsigned numWorkingQueues(bool = true);
-	unsigned numWaitingClients(void);
+	unsigned numWorkingQueues(bool = true) const;
+	unsigned numWaitingClients(void) const;
 	void setParams(double, double, double, double); //todo do testow
 
 private:
@@ -41,8 +41,8 @@ private:
 	double _constPosOfChangingQueue;
 
 	void update(unsigned = 1);
-	unsigned chooseBestQueue(void);
-	unsigned getRandomQueue(STATUS = CLOSED);
+	unsigned chooseBestQueue(void) const;
+	unsigned getRandomQueue(STATUS = CLOSED) const;
 };
 
 #endif /* SYSTEM_H_ */

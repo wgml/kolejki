@@ -6,7 +6,7 @@
  */
 #include "show.h"
 
-void show(System s)
+void show(const System & s)
 {
 	unsigned widthL = 38;
 	unsigned widthR = 38;

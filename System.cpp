@@ -74,7 +74,7 @@ void System::update(unsigned ticks)
 			it->update(ticks);
 }
 
-unsigned System::numQueues(void)
+unsigned System::numQueues(void) const
 {
 	/*
 	 * zwraca liczbe wszystkich kolejek
@@ -82,7 +82,7 @@ unsigned System::numQueues(void)
 	return this->queues.size();
 }
 
-STATUS System::getQueueStatus(unsigned n)
+STATUS System::getQueueStatus(unsigned n) const
 {
 	/*
 	 * zwraca STATUS status wybranej kolejki
@@ -93,7 +93,7 @@ STATUS System::getQueueStatus(unsigned n)
 		return this->queues[n].getStatus();
 }
 
-unsigned System::getQueueLength(unsigned q)
+unsigned System::getQueueLength(unsigned q) const
 {
 	/*
 	 * zwraca ilosc czekajacych osob (wlacznie z obslugiwana)
@@ -105,7 +105,7 @@ unsigned System::getQueueLength(unsigned q)
 		return this->queues[q].getLength();
 }
 
-unsigned System::getQueueTime(unsigned q)
+unsigned System::getQueueTime(unsigned q) const
 {
 	/*
 	 * zwraca potrzebny czas (ticks) na rozladowanie
@@ -117,7 +117,7 @@ unsigned System::getQueueTime(unsigned q)
 		return this->queues[q].getTotalTime();
 }
 
-bool System::isWorking(void)
+bool System::isWorking(void) const
 {
 	/*
 	 * zwraca, czy caly system pracuje
@@ -245,7 +245,7 @@ void System::setQueueStatus(unsigned q, STATUS s)
 		this->queues[q].setStatus(s);
 }
 
-unsigned System::chooseBestQueue(void)
+unsigned System::chooseBestQueue(void) const
 {
 	/*
 	 * wybiera najlepsza kolejke
@@ -262,31 +262,31 @@ unsigned System::chooseBestQueue(void)
 	return bestId;
 }
 
-unsigned System::numWorkingQueues(bool withWillClose)
+unsigned System::numWorkingQueues(bool withWillClose) const
 {
 	/*
 	 * zlicza pracujace kolejki (Status = OPEN || WILL_CLOSE)
 	 * lub tylko otwarte, jesli arg = true;
 	 */
 	unsigned counter = 0;
-	for(std::vector<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
-		if(it->getStatus() == OPEN || (withWillClose && it->getStatus() == WILL_CLOSE))
+	for(unsigned i = 0; i < this->numQueues(); i++)
+		if(this->queues[i].getStatus() == OPEN || (withWillClose && this->queues[i].getStatus() == WILL_CLOSE))
 			counter++;
 	return counter;
 }
 
-unsigned System::numWaitingClients(void)
+unsigned System::numWaitingClients(void) const
 {
 	/*
 	 * zwraca liczbe klientow czekajacych we wszystkich kolejkach
 	 */
 	unsigned sum = 0;
-	for(std::vector<Queue>::iterator i = this->queues.begin(); i != this->queues.end(); i++)
-		sum += i->getLength();
+	for(unsigned i = 0; i < this->numQueues(); i++)
+		sum += this->queues[i].getLength();
 	return sum;
 }
 
-unsigned System::getRandomQueue(STATUS s)
+unsigned System::getRandomQueue(STATUS s) const
 {
 	unsigned r;
 	do

@@ -12,7 +12,7 @@ Client::Client(const Client & c)
 	this->serviceTime = c.serviceTime;
 }
 
-unsigned Client::getServiceTime(void)
+unsigned Client::getServiceTime(void) const
 {
 	/*
 	 * zwraca calkowity czas potrzebny na pozbycie sie z kolejki

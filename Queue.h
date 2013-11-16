@@ -24,12 +24,12 @@ public:
 	Queue & operator = (const Queue &);
 
 	void update(unsigned ticks = 1);
-	unsigned getLength(void);
-	unsigned getTotalTime(void);
-	STATUS getStatus(void);
+	unsigned getLength(void) const;
+	unsigned getTotalTime(void) const;
+	STATUS getStatus(void) const;
 	void setStatus(STATUS);
 	void add(Client);
-	bool isEmpty(void);
+	bool isEmpty(void) const;
 	Client removeLast(void);
 
 private:

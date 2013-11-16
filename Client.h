@@ -16,7 +16,7 @@ public:
 	Client(int i) : serviceTime(i), multiplier(1) {};//TODO do testow
 	Client(const Client &);
 	~Client(void) {};
-	unsigned getServiceTime(void);
+	unsigned getServiceTime(void) const;
 	Client & operator = (const Client &);
 
 private:

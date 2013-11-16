@@ -13,6 +13,6 @@
 #include <string>
 #include "System.h"
 
-void show(System);
+void show(const System &);
 
 #endif /* SHOW_H_ */

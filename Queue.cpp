@@ -34,7 +34,7 @@ Queue & Queue::operator = (const Queue & q)
 	return (*this);
 }
 
-unsigned Queue::getLength()
+unsigned Queue::getLength() const
 {
 	/*
 	 * zwraca ilosc elementow w kolejce
@@ -42,7 +42,7 @@ unsigned Queue::getLength()
 	return this->queue.size();
 }
 
-unsigned Queue::getTotalTime()
+unsigned Queue::getTotalTime() const
 {
 	/*
 	 * zwraca calkowity czas (ticki) do wyzerowania kolejki
@@ -50,12 +50,12 @@ unsigned Queue::getTotalTime()
 	return this->totalNeededTime;
 }
 
-STATUS Queue::getStatus(void)
+STATUS Queue::getStatus(void) const
 {
 	return this->status;
 }
 
-bool Queue::isEmpty()
+bool Queue::isEmpty() const
 {
 	/*
 	 * zwraca, czy kolejka jest pusta

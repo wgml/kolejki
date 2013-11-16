@@ -22,9 +22,14 @@ int main() {
 	while (i--)
 	{
 		s.simulate();
-		show(s);
+		if(i%10 == 0)
+		{
+			show(s);
+			cout << 20000-i<<endl;
+		}
+
 		//usleep(100000);
-		cout << 20000-i<<endl;
+
 	}
 
 	return 0;
