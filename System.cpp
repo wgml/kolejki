@@ -48,6 +48,17 @@ System::System(const System & s)
 	this->_constRatioToCloseExisting = s._constRatioToCloseExisting;
 }
 
+void System::setParams(double p1, double p2, double p3)
+{
+	/*
+	 * ustawia parametry na dane
+	 * tylko do testow
+	 */
+	this->_constNewClients = p1;
+	this->_constRatioToOpenNew = p2;
+	this->_constRatioToCloseExisting = p3;
+}
+
 void System::update(unsigned ticks)
 {
 	/*

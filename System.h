@@ -30,6 +30,7 @@ public:
 	void setQueueStatus(unsigned, STATUS);//todo private
 	unsigned numWorkingQueues(bool = true);
 	unsigned numWaitingClients(void);
+	void setParams(double, double, double); //todo do testow
 
 private:
 	std::vector<Queue> queues;
