@@ -10,19 +10,21 @@
 #include "System.h"
 #include "show.h"
 
+
 using namespace std;
 
 int main() {
 	System s(5);
 
-	s.setParams(2, 8, 6);
+	s.setParams(3, 8, 3, 1);
 	s.start();
-	int i = 200;
+	int i = 20000;
 	while (i--)
 	{
 		s.simulate();
 		show(s);
-		usleep(1000000);
+		//usleep(100000);
+		cout << 20000-i<<endl;
 	}
 
 	return 0;

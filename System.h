@@ -30,7 +30,7 @@ public:
 	void setQueueStatus(unsigned, STATUS);//todo private
 	unsigned numWorkingQueues(bool = true);
 	unsigned numWaitingClients(void);
-	void setParams(double, double, double); //todo do testow
+	void setParams(double, double, double, double); //todo do testow
 
 private:
 	std::vector<Queue> queues;
@@ -38,6 +38,8 @@ private:
 	double _constNewClients;
 	double _constRatioToOpenNew;
 	double _constRatioToCloseExisting;
+	double _constPosOfChangingQueue;
+
 	void update(unsigned = 1);
 	unsigned chooseBestQueue(void);
 	unsigned getRandomQueue(STATUS = CLOSED);

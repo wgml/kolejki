@@ -119,3 +119,14 @@ void Queue::update(unsigned ticks)
 			this->status = CLOSED;
 	}
 }
+
+Client Queue::removeLast()
+{
+	/*
+	 * usuwa ostatni element z kolejki
+	 * i zwraca go
+	 */
+	Client c = this->queue.back();
+	this->queue.pop_back();
+	return c;
+}

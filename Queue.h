@@ -13,6 +13,7 @@ enum STATUS { OPEN, CLOSED, WILL_CLOSE, NO_EXIST};
 
 #include <deque>
 #include "Client.h"
+
 class Queue
 {
 public:
@@ -29,6 +30,8 @@ public:
 	void setStatus(STATUS);
 	void add(Client);
 	bool isEmpty(void);
+	Client removeLast(void);
+
 private:
 	std::deque<Client> queue;
 	unsigned totalNeededTime;

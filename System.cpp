@@ -18,6 +18,7 @@ System::System(void)
 	this->_constNewClients = 3;
 	this->_constRatioToOpenNew = 10;
 	this->_constRatioToCloseExisting = 3;
+	this->_constPosOfChangingQueue = 0.7;
 }
 
 System::System(unsigned i)
@@ -33,6 +34,7 @@ System::System(unsigned i)
 	this->_constNewClients = 3;
 	this->_constRatioToOpenNew = 10;
 	this->_constRatioToCloseExisting = 3;
+	this->_constPosOfChangingQueue = 0.7;
 }
 
 System::System(const System & s)
@@ -46,9 +48,10 @@ System::System(const System & s)
 	this->_constNewClients = s._constNewClients;
 	this->_constRatioToOpenNew = s._constRatioToOpenNew;
 	this->_constRatioToCloseExisting = s._constRatioToCloseExisting;
+	this->_constPosOfChangingQueue = s._constPosOfChangingQueue;
 }
 
-void System::setParams(double p1, double p2, double p3)
+void System::setParams(double p1, double p2, double p3, double p4)
 {
 	/*
 	 * ustawia parametry na dane
@@ -57,6 +60,7 @@ void System::setParams(double p1, double p2, double p3)
 	this->_constNewClients = p1;
 	this->_constRatioToOpenNew = p2;
 	this->_constRatioToCloseExisting = p3;
+	this->_constPosOfChangingQueue = p4;
 }
 
 void System::update(unsigned ticks)
@@ -152,6 +156,8 @@ void System::simulate(bool oneTick)
 	 * Nastepnie przydziela ich do dnajkrotszych kolejek.
 	 * decyduje, czy nie mozna zamknac nadmiaru kolejek
 	 * jesli todo iloscCzekajacych/iloscOtwartychKolejek jest mniejsza od jakiegos consta.
+	 * W kazdym przejsciu petli pozwala zmienic osobie z dowolnej kolejki miejsce
+	 * na miejsce w najkrotszej kolejce z zadanym prawdopodobienstwem. //todo
 	 * Jesli oneTick == true, wykonuje tylko jeden update i przerywa.
 	 * Przydatne by zczytywac dane symulacji na biezaco.
 	 * todo http://www.willa.me/2013/11/the-six-most-common-species-of-code.html todo? todo
@@ -174,6 +180,41 @@ void System::simulate(bool oneTick)
 		}
 
 		this->update();
+
+		/*
+		 * zmiana kolejki przez klienta, jesli trzeba
+		 * i jesli otwarte jest co najmniej 2 kolejki
+		 * i jesli roznica miedzy dlugoscia kolejek to co najmniej 3
+		 * index zabezpiecza przed nieskonczona petla,
+		 * ogranicza wykonanie do 10 * (1+prawdopodobienstwo przejsc)
+		 */
+		unsigned indx = 0;
+		while(this->numWorkingQueues() > 1 && (indx++ < 10 * (1 + this->_constPosOfChangingQueue)) && urand() < this->_constPosOfChangingQueue)
+		{
+			/*
+			 * wybiera klienta, ktory spelnia warunki:
+			 * ) nie jest obslugiwany
+			 * ) nie czeka w najkrotszej kolejce
+			 */
+			//TODO bierze pod uwage odleglosc miedzy kasami przy prawdopodobienstwie
+
+			//losuje kolejke do zmiany
+			unsigned num;
+			do
+				num = ((unsigned)urand(0, this->numQueues())) % this->numQueues();
+			while((this->getQueueLength(num) == 1) || (this->chooseBestQueue() == num) ||
+					(this->getQueueStatus(num) == CLOSED) || (this->getQueueStatus(num) == NO_EXIST));
+
+			//sprawdza, czy roznica dlugosci kolejek jest odpowiednia
+			if(this->getQueueLength(num) - this->getQueueLength(this->chooseBestQueue()) < 3)
+				continue;
+
+
+			//sciaga klienta z konca danej kolejki i przenosci go na koniec nakrotszej
+			Client c = this->queues[num].removeLast();
+
+			this->queues[this->chooseBestQueue()].add(c);
+		}
 
 		if((1.0 * this->numWaitingClients()) / this->numWorkingQueues() > this->_constRatioToOpenNew)
 		{
