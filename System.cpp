@@ -204,9 +204,12 @@ unsigned System::chooseBestQueue(void)
 
 unsigned System::numWorkingQueues(void)
 {
+	/*
+	 * zlicza pracujace kolejki
+	 */
 	unsigned counter = 0;
 	for(std::vector<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
-		if(it->getStatus() == OPEN)
+		if(it->getStatus() == OPEN || it->getStatus() == WILL_CLOSE)
 			counter++;
 	return counter;
 }
@@ -220,4 +223,13 @@ unsigned System::numWaitingClients(void)
 	for(std::vector<Queue>::iterator i = this->queues.begin(); i != this->queues.end(); i++)
 		sum += i->getLength();
 	return sum;
+}
+
+unsigned System::getRandomQueue(STATUS s)
+{
+	unsigned r;
+	do
+		r = ((unsigned) urand(0, this->numQueues())) % this->numQueues();
+	while(this->getQueueStatus(r) != s);
+	return r;
 }

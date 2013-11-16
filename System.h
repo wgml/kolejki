@@ -39,6 +39,7 @@ private:
 	const double _constRatioToCloseExisting;
 	void update(unsigned = 1);
 	unsigned chooseBestQueue(void);
+	unsigned getRandomQueue(STATUS = CLOSED);
 };
 
 #endif /* SYSTEM_H_ */
