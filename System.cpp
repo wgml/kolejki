@@ -49,8 +49,8 @@ void System::update(unsigned ticks)
 	 * o ticks skokow
 	 */
 	for(std::vector<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
-		if((*it).getStatus() == OPEN)
-			(*it).update(ticks);
+		if(it->getStatus() == OPEN || it->getStatus() == WILL_CLOSE)
+			it->update(ticks);
 }
 
 unsigned System::numQueues(void)
@@ -130,9 +130,9 @@ void System::simulate(bool oneTick)
 	 * sprawdza, czy system jest w stanie open
 	 * jesli tak, do poki stan systemu sie nie zmieni,
 	 * przeprowadza symulacje.
-	 * Najpierw losuje TODO liczbe nowych klientow,
+	 * Najpierw losuje liczbe nowych klientow,
 	 * z prawdopodobienstwem __probOfNewClient.
-	 * Nastepnie przydziela ich do najlepszych kolejek. todo najlepszych?
+	 * Nastepnie przydziela ich do dnajkrotszych kolejek.
 	 * decyduje, czy nie mozna zamknac nadmiaru kolejek
 	 * jesli todo iloscCzekajacych/iloscOtwartychKolejek jest mniejsza od jakiegos consta.
 	 * Jesli oneTick == true, wykonuje tylko jeden update i przerywa.
@@ -158,10 +158,8 @@ void System::simulate(bool oneTick)
 
 		this->update();
 
-		/*
-		 * updejt listy kolejek
-		 * TODO
-		 */
+
+
 		if(oneTick)
 			break;
 	}
@@ -200,4 +198,12 @@ unsigned System::numWorkingQueues(void)
 		if(it->getStatus() == OPEN)
 			counter++;
 	return counter;
+}
+
+unsigned System::getWaitingClients(void)
+{
+	unsigned sum = 0;
+	for(std::vector<Queue>::iterator i = this->queues.begin(); i != this->queues.end(); i++)
+		sum += i->getLength();
+	return sum;
 }

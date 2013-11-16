@@ -29,6 +29,7 @@ public:
 	bool isWorking(void);
 	void setQueueStatus(unsigned, STATUS);
 	unsigned numWorkingQueues(void);
+	unsigned getWaitingClients(void);
 
 private:
 	std::vector<Queue> queues;
