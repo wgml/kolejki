@@ -28,7 +28,7 @@ public:
 	void stop(void);
 	bool isWorking(void);
 	void setQueueStatus(unsigned, STATUS);//todo private
-	unsigned numWorkingQueues(void);
+	unsigned numWorkingQueues(bool = true);
 	unsigned numWaitingClients(void);
 
 private:

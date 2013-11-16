@@ -171,7 +171,7 @@ void System::simulate(bool oneTick)
 			 */
 			this->setQueueStatus(this->getRandomQueue(), OPEN);
 		}
-		else if((1.0 * this->numWaitingClients()) / this->numWorkingQueues() < this->_constRatioToCloseExisting)
+		else if(((1.0 * this->numWaitingClients()) / this->numWorkingQueues() < this->_constRatioToCloseExisting) && this->numWorkingQueues(false) > 1)
 		{
 			/*
 			 * przygotowanie do zamkniecia istniejacej kolejki
@@ -210,14 +210,15 @@ unsigned System::chooseBestQueue(void)
 	return bestId;
 }
 
-unsigned System::numWorkingQueues(void)
+unsigned System::numWorkingQueues(bool withWillClose)
 {
 	/*
-	 * zlicza pracujace kolejki
+	 * zlicza pracujace kolejki (Status = OPEN || WILL_CLOSE)
+	 * lub tylko otwarte, jesli arg = true;
 	 */
 	unsigned counter = 0;
 	for(std::vector<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
-		if(it->getStatus() == OPEN || it->getStatus() == WILL_CLOSE)
+		if(it->getStatus() == OPEN || (withWillClose && it->getStatus() == WILL_CLOSE))
 			counter++;
 	return counter;
 }

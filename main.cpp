@@ -78,13 +78,12 @@ int main() {
 
 	s.start();
 	s.setQueueStatus(1, OPEN);
-	s.setQueueStatus(0, OPEN);
-	int i = 20;
+	int i = 200;
 	while (i--)
 	{
 		s.simulate();
 		show(s);
-		sleep(1);
+		usleep(1000000);
 	}
 
 	return 0;
