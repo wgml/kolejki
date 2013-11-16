@@ -16,6 +16,8 @@ System::System(void)
 	this->working = false;
 
 	this->_constNewClients = 3;
+	this->_constRatioToOpenNew = 10;
+	this->_constRatioToCloseExisting = 3;
 }
 
 System::System(unsigned i)
@@ -29,6 +31,8 @@ System::System(unsigned i)
 	this->working = false;
 
 	this->_constNewClients = 3;
+	this->_constRatioToOpenNew = 10;
+	this->_constRatioToCloseExisting = 3;
 }
 
 System::System(const System & s)
@@ -40,6 +44,8 @@ System::System(const System & s)
 	this->working = s.working;
 
 	this->_constNewClients = s._constNewClients;
+	this->_constRatioToOpenNew = s._constRatioToOpenNew;
+	this->_constRatioToCloseExisting = s._constRatioToCloseExisting;
 }
 
 void System::update(unsigned ticks)
@@ -158,7 +164,12 @@ void System::simulate(bool oneTick)
 
 		this->update();
 
-
+		if((1.0 * this->numWaitingClients()) / this->numWorkingQueues > this->_constRatioToOpenNew)
+		{
+			/*
+			 * otwieranie nowej kolejki
+			 */
+		}
 
 		if(oneTick)
 			break;
@@ -200,8 +211,11 @@ unsigned System::numWorkingQueues(void)
 	return counter;
 }
 
-unsigned System::getWaitingClients(void)
+unsigned System::numWaitingClients(void)
 {
+	/*
+	 * zwraca liczbe klientow czekajacych we wszystkich kolejkach
+	 */
 	unsigned sum = 0;
 	for(std::vector<Queue>::iterator i = this->queues.begin(); i != this->queues.end(); i++)
 		sum += i->getLength();

@@ -27,14 +27,16 @@ public:
 	void start(void);
 	void stop(void);
 	bool isWorking(void);
-	void setQueueStatus(unsigned, STATUS);
+	void setQueueStatus(unsigned, STATUS);//todo private
 	unsigned numWorkingQueues(void);
-	unsigned getWaitingClients(void);
+	unsigned numWaitingClients(void);
 
 private:
 	std::vector<Queue> queues;
 	bool working;
-	double _constNewClients;
+	const double _constNewClients;
+	const double _constRatioToOpenNew;
+	const double _constRatioToCloseExisting;
 	void update(unsigned = 1);
 	unsigned chooseBestQueue(void);
 };
