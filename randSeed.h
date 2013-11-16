@@ -14,5 +14,4 @@
  */
 
 static boost::mt19937 rng(1); //TODO sztywny seed
-
 #endif /* RANDSEED_H_ */
