@@ -164,11 +164,19 @@ void System::simulate(bool oneTick)
 
 		this->update();
 
-		if((1.0 * this->numWaitingClients()) / this->numWorkingQueues > this->_constRatioToOpenNew)
+		if((1.0 * this->numWaitingClients()) / this->numWorkingQueues() > this->_constRatioToOpenNew)
 		{
 			/*
 			 * otwieranie nowej kolejki
 			 */
+			this->setQueueStatus(this->getRandomQueue(), OPEN);
+		}
+		else if((1.0 * this->numWaitingClients()) / this->numWorkingQueues() < this->_constRatioToCloseExisting)
+		{
+			/*
+			 * przygotowanie do zamkniecia istniejacej kolejki
+			 */
+			this->setQueueStatus(this->getRandomQueue(OPEN), WILL_CLOSE);
 		}
 
 		if(oneTick)

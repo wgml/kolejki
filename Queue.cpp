@@ -111,5 +111,11 @@ void Queue::update(unsigned ticks)
 			this->currentClientTime = 0;
 			this->queue.pop();
 		}
+
+		/*zamyka kolejke, jesli miala sie zamknac
+		 * i jest pusta
+		 */
+		if(this->status == WILL_CLOSE && this->totalNeededTime == 0)
+			this->status = CLOSED;
 	}
 }

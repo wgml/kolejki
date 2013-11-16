@@ -34,9 +34,9 @@ public:
 private:
 	std::vector<Queue> queues;
 	bool working;
-	const double _constNewClients;
-	const double _constRatioToOpenNew;
-	const double _constRatioToCloseExisting;
+	double _constNewClients;
+	double _constRatioToOpenNew;
+	double _constRatioToCloseExisting;
 	void update(unsigned = 1);
 	unsigned chooseBestQueue(void);
 	unsigned getRandomQueue(STATUS = CLOSED);
