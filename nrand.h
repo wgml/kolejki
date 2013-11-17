@@ -13,6 +13,5 @@
 
 //TODO dobry random
 unsigned nrand(double mean = 0.0, double dev = 1.0);
-static unsigned nrandQ = 0;
 
 #endif /* NRAND_H_ */

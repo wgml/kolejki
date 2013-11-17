@@ -5,7 +5,7 @@
  *      Author: vka
  */
 #include "System.h"
-
+#include <unistd.h> //todo
 System::System(void)
 {
 	/*
@@ -101,7 +101,7 @@ unsigned System::getQueueLength(unsigned q) const
 	 * zwraca ilosc czekajacych osob (wlacznie z obslugiwana)
 	 * w danej kolejce
 	 */
-	if(q >= this->queues.size())
+	if(q >= this->queues.size() || q < 0)
 		return 0;
 	else
 		return this->queues[q].getLength();
@@ -167,22 +167,18 @@ void System::simulate(bool oneTick)
 	 */
 	if(!this->working)
 		return;
-
 	while(this->working)
 	{
 		/*
 		 * losowanie lowych klientow
 		 */
-
 		unsigned newClients = urand() * this->_constNewClients;
 		for(int i = 0; i < newClients; i++)
 		{
 			unsigned k = this->chooseBestQueue();
 			this->queues[k].add(Client(5));//TODO na sztywno
 		}
-
 		this->update();
-
 		/*
 		 * zmiana kolejki przez klienta, jesli trzeba
 		 * i jesli otwarte jest co najmniej 2 kolejki
@@ -191,7 +187,7 @@ void System::simulate(bool oneTick)
 		 * ogranicza wykonanie do 10 * (1+prawdopodobienstwo przejsc)
 		 */
 		unsigned indx = 0;
-		while(this->numWorkingQueues() > 1 && (indx++ < 10 * (1 + this->_constPosOfChangingQueue)) && urand() < this->_constPosOfChangingQueue)
+		while(this->numWorkingQueues(false) > 1 && (indx++ < 10 * (1.0 + this->_constPosOfChangingQueue)) && urand() < this->_constPosOfChangingQueue)
 		{
 			/*
 			 * wybiera klienta, ktory spelnia warunki:
@@ -199,11 +195,13 @@ void System::simulate(bool oneTick)
 			 * ) nie czeka w najkrotszej kolejce
 			 */
 			//TODO bierze pod uwage odleglosc miedzy kasami przy prawdopodobienstwie
-
 			//losuje kolejke do zmiany
 			unsigned num;
 			do
+			{
+				//todo ograniczenie wykonania petli nieskonczonej
 				num = ((unsigned)urand(0, this->numQueues())) % this->numQueues();
+			}
 			while((this->getQueueLength(num) == 1) || (this->chooseBestQueue() == num) ||
 					(this->getQueueStatus(num) == CLOSED) || (this->getQueueStatus(num) == NO_EXIST));
 
@@ -211,28 +209,27 @@ void System::simulate(bool oneTick)
 			if(this->getQueueLength(num) - this->getQueueLength(this->chooseBestQueue()) < 3)
 				continue;
 
-
 			//sciaga klienta z konca danej kolejki i przenosci go na koniec nakrotszej
 			Client c = this->queues[num].removeLast();
 
 			this->queues[this->chooseBestQueue()].add(c);
 		}
-
-		if((1.0 * this->numWaitingClients()) / this->numWorkingQueues() > this->_constRatioToOpenNew)
+		if(((1.0 * this->numWaitingClients()) / this->numWorkingQueues() > this->_constRatioToOpenNew)
+				&& (this->numWorkingQueues() < this->numQueues()))
 		{
 			/*
 			 * otwieranie nowej kolejki
 			 */
 			this->setQueueStatus(this->getRandomQueue(), OPEN);
 		}
-		else if(((1.0 * this->numWaitingClients()) / this->numWorkingQueues() < this->_constRatioToCloseExisting) && this->numWorkingQueues(false) > 1)
+
+		else if(((1.0 * this->numWaitingClients()) / this->numWorkingQueues(false) < this->_constRatioToCloseExisting) && this->numWorkingQueues(false) > 1)
 		{
 			/*
 			 * przygotowanie do zamkniecia istniejacej kolejki
 			 */
 			this->setQueueStatus(this->getRandomQueue(OPEN), WILL_CLOSE);
 		}
-
 		if(oneTick)
 			break;
 	}
@@ -290,9 +287,19 @@ unsigned System::numWaitingClients(void) const
 
 unsigned System::getRandomQueue(STATUS s) const
 {
-	unsigned r;
+	/*unsigned r;
 	do
 		r = ((unsigned) urand(0, this->numQueues())) % this->numQueues();
 	while(this->getQueueStatus(r) != s);
-	return r;
+	return r;*/
+	//TODO, random, nie pierwszy z brzegu...
+	unsigned i = 0;
+	/*do
+	{
+		i++;
+		std::cout << "random #11" <<std::endl;
+		usleep(10000);
+	}*/
+	while(this->getQueueStatus(i++) != s);
+	return i - 1;
 }

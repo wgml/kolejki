@@ -13,5 +13,5 @@
  * deklaracja generatora liczb losowych
  */
 
-static boost::mt19937 * rng = new boost::mt19937(1); //TODO sztywny seed
+static boost::mt19937 rng = boost::mt19937(38190123); //TODO sztywny seed*/
 #endif /* RANDSEED_H_ */
