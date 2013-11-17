@@ -12,6 +12,7 @@ System::System(void)
 	 * inicjuje sytem z jedna kolejka w stanie zamknietym
 	 * i nie pracujacy
 	 */
+	this->queues = std::vector<Queue>();
 	this->queues.insert(this->queues.begin(), 1, Queue(CLOSED));
 	this->working = false;
 
@@ -28,6 +29,7 @@ System::System(unsigned i)
 	 * w stanie zamknietym
 	 * i nie pracujacy
 	 */
+	this->queues = std::vector<Queue>();
 	this->queues.insert(this->queues.begin(), i, Queue(CLOSED));
 	this->working = false;
 

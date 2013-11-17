@@ -17,7 +17,7 @@ enum STATUS { OPEN, CLOSED, WILL_CLOSE, NO_EXIST};
 class Queue
 {
 public:
-	Queue(void) : totalNeededTime(0), currentClientTime(0), status(CLOSED) {};
+	Queue(void) : currentClientTime(0), status(CLOSED) {};
 	Queue(STATUS s);
 	Queue(Client);
 	~Queue(void) {};
@@ -34,7 +34,6 @@ public:
 
 private:
 	std::deque<Client> queue;
-	unsigned totalNeededTime;
 	unsigned currentClientTime;
 	STATUS status;
 };

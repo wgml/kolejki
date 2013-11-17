@@ -8,7 +8,6 @@
 
 Client::Client(const Client & c)
 {
-	this->multiplier = c.multiplier;
 	this->serviceTime = c.serviceTime;
 }
 
@@ -17,12 +16,11 @@ unsigned Client::getServiceTime(void) const
 	/*
 	 * zwraca calkowity czas potrzebny na pozbycie sie z kolejki
 	 */
-	return ceil(this->serviceTime * this->multiplier);
+	return this->serviceTime;
 }
 
 Client & Client::operator = (const Client & c)
 {
-	this->multiplier = c.multiplier;
 	this->serviceTime = c.serviceTime;
 	return (*this);
 }
