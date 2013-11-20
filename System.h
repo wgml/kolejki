@@ -31,10 +31,13 @@ public:
 	unsigned numWorkingQueues(bool = true) const;
 	unsigned numWaitingClients(void) const;
 	void setParams(double, double, double, double); //todo do testow
-
+	double getParam(int) const;
+	unsigned getTick(void) const;
 private:
 	std::vector<Queue> queues;
 	bool working;
+	unsigned tick; //ilosc updatow od uruchomienia
+
 	double _constNewClients;
 	double _constRatioToOpenNew;
 	double _constRatioToCloseExisting;

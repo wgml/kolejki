@@ -5,27 +5,35 @@
 // Copyright   : 
 // Description : Hello World in C++, Ansi-style
 //============================================================================
-
+//#include <cstdlib>
 #include <unistd.h> //sleep
+#include <boost/filesystem.hpp> //exists()
 #include "System.h"
 #include "show.h"
-#include "urand.h"
-#include <cstdlib>
+#include "saveToFile.h"
+
 using namespace std;
+using boost::filesystem;
 
 int main() {
 
 	System s(13);
-
+	ofstream p("data", ios::trunc);
 	s.setParams(3, 8, 3, 0.7);
 	s.start();
-
-	int i = 20000;
+	//saveToFile(s, p);
+	int i = 2;
 	while (i--)
 	{
+		if(boost::filesystem::exists("break"))
+			break;
+		if(boost::filesystem::exists("lock"))
+			continue;
 		s.simulate();
-		show(s, 20000-i);
+		saveToFile(s, p);
 		usleep(10000);
 	}
+
+	p.close();
 	return 0;
 }

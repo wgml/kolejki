@@ -20,6 +20,8 @@ System::System(void)
 	this->_constRatioToOpenNew = 10;
 	this->_constRatioToCloseExisting = 3;
 	this->_constPosOfChangingQueue = 0.7;
+
+	this->tick = 0;
 }
 
 System::System(unsigned i)
@@ -37,6 +39,8 @@ System::System(unsigned i)
 	this->_constRatioToOpenNew = 10;
 	this->_constRatioToCloseExisting = 3;
 	this->_constPosOfChangingQueue = 0.7;
+
+	this->tick = 0;
 }
 
 System::System(const System & s)
@@ -51,6 +55,8 @@ System::System(const System & s)
 	this->_constRatioToOpenNew = s._constRatioToOpenNew;
 	this->_constRatioToCloseExisting = s._constRatioToCloseExisting;
 	this->_constPosOfChangingQueue = s._constPosOfChangingQueue;
+
+	this->tick = s.tick;
 }
 
 void System::setParams(double p1, double p2, double p3, double p4)
@@ -74,6 +80,7 @@ void System::update(unsigned ticks)
 	for(std::vector<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
 		if(it->getStatus() == OPEN || it->getStatus() == WILL_CLOSE)
 			it->update(ticks);
+	this->tick += ticks;
 }
 
 unsigned System::numQueues(void) const
@@ -134,7 +141,6 @@ void System::start(void)
 	 * Nie rownoznaczne z symulacja.
 	 */
 	this->working = true;
-	this->simulate();
 }
 
 void System::stop(void)
@@ -302,4 +308,35 @@ unsigned System::getRandomQueue(STATUS s) const
 	}*/
 	while(this->getQueueStatus(i++) != s);
 	return i - 1;
+}
+
+unsigned System::getTick(void) const
+{
+	return this->tick;
+}
+
+double System::getParam(int p) const
+{
+	/*
+	 * zwraca wartosc danego param
+	 * w kolejnosci (1-...)!!:
+	 * double _constNewClients;
+	 * double _constRatioToOpenNew;
+	 * double _constRatioToCloseExisting;
+	 * double _constPosOfChangingQueue;
+	 * lub zero, jesli poza zakresem
+	 */
+	switch(p)
+	{
+	case 1:
+		return this->_constNewClients;
+	case 2:
+		return this->_constRatioToOpenNew;
+	case 3:
+		return this->_constRatioToCloseExisting;
+	case 4:
+		return this->_constPosOfChangingQueue;
+	default:
+		return 0;
+	}
 }

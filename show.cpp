@@ -6,18 +6,18 @@
  */
 #include "show.h"
 
-void show(const System & s, unsigned i)
+void show(const System & s)
 {
 	unsigned widthL = 38;
 	unsigned widthR = 38;
 
-	unsigned widthLTop, widthRTop, len = 1, b = i;
+	unsigned widthLTop, widthRTop, len = 1, b = s.getTick();
 	while((b /= 10) != 0)
 		len++;
 	widthLTop = widthL - (len + 1) / 2;
 	widthRTop = widthR - len / 2;
 
-	std::cout << "| " << std::string(widthLTop, '-') << i << std::string(widthRTop, '-') << " |";
+	std::cout << "| " << std::string(widthLTop, '-') << s.getTick() << std::string(widthRTop, '-') << " |";
 	std::cout << std::endl;
 
 	std::cout << "| " << std::left << std::setw(widthL) << "Stan: ";
