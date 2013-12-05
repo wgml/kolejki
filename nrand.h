@@ -11,7 +11,6 @@
 #include <boost/random/normal_distribution.hpp>
 #include "randSeed.h"
 
-//TODO dobry random
 unsigned nrand(double mean = 0.0, double dev = 1.0);
 
 #endif /* NRAND_H_ */

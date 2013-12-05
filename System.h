@@ -27,10 +27,9 @@ public:
 	void start(void);
 	void stop(void);
 	bool isWorking(void) const;
-	void setQueueStatus(unsigned, STATUS);//todo private
 	unsigned numWorkingQueues(bool = true) const;
 	unsigned numWaitingClients(void) const;
-	void setParams(double, double, double, double); //todo do testow
+	void setParams(double, double, double, double);
 	double getParam(int) const;
 	unsigned getTick(void) const;
 private:
@@ -46,6 +45,7 @@ private:
 	void update(unsigned = 1);
 	unsigned chooseBestQueue(void) const;
 	unsigned getRandomQueue(STATUS = CLOSED) const;
+	void setQueueStatus(unsigned, STATUS);
 };
 
 #endif /* SYSTEM_H_ */

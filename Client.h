@@ -20,6 +20,7 @@ public:
 
 private:
 	unsigned serviceTime;
+	//todo pola statyczne z wartosciami dla generatora
 };
 
 

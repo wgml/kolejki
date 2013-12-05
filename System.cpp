@@ -5,7 +5,7 @@
  *      Author: vka
  */
 #include "System.h"
-#include <unistd.h> //todo
+#include <unistd.h>//todo uzyć czegoś z qt
 System::System(void)
 {
 	/*
@@ -163,9 +163,9 @@ void System::simulate(bool oneTick)
 	 * z prawdopodobienstwem __probOfNewClient.
 	 * Nastepnie przydziela ich do dnajkrotszych kolejek.
 	 * decyduje, czy nie mozna zamknac nadmiaru kolejek
-	 * jesli todo iloscCzekajacych/iloscOtwartychKolejek jest mniejsza od jakiegos consta.
+	 * jesli iloscCzekajacych/iloscOtwartychKolejek jest mniejsza od jakiegos consta.
 	 * W kazdym przejsciu petli pozwala zmienic osobie z dowolnej kolejki miejsce
-	 * na miejsce w najkrotszej kolejce z zadanym prawdopodobienstwem. //todo
+	 * na miejsce w najkrotszej kolejce z zadanym prawdopodobienstwem.
 	 * Jesli oneTick == true, wykonuje tylko jeden update i przerywa.
 	 * Przydatne by zczytywac dane symulacji na biezaco.
 	 * todo http://www.willa.me/2013/11/the-six-most-common-species-of-code.html todo? todo
@@ -200,16 +200,19 @@ void System::simulate(bool oneTick)
 			 * ) nie jest obslugiwany
 			 * ) nie czeka w najkrotszej kolejce
 			 */
-			//TODO bierze pod uwage odleglosc miedzy kasami przy prawdopodobienstwie
+			//nie bierze pod uwage odleglosc miedzy kasami przy prawdopodobienstwie
 			//losuje kolejke do zmiany
 			unsigned num;
+			bool toBreak = false;
+			unsigned iter = 0;
 			do
 			{
-				//todo ograniczenie wykonania petli nieskonczonej
 				num = ((unsigned)urand(0, this->numQueues())) % this->numQueues();
+				if(++iter > 1000)
+					toBreak = true;
 			}
-			while((this->getQueueLength(num) == 1) || (this->chooseBestQueue() == num) ||
-					(this->getQueueStatus(num) == CLOSED) || (this->getQueueStatus(num) == NO_EXIST));
+			while(!toBreak && ((this->getQueueLength(num) == 1) || (this->chooseBestQueue() == num) ||
+					(this->getQueueStatus(num) == CLOSED) || (this->getQueueStatus(num) == NO_EXIST)));
 
 			//sprawdza, czy roznica dlugosci kolejek jest odpowiednia
 			if(this->getQueueLength(num) - this->getQueueLength(this->chooseBestQueue()) < 3)
@@ -293,21 +296,14 @@ unsigned System::numWaitingClients(void) const
 
 unsigned System::getRandomQueue(STATUS s) const
 {
-	/*unsigned r;
+	unsigned r;
 	do
 		r = ((unsigned) urand(0, this->numQueues())) % this->numQueues();
 	while(this->getQueueStatus(r) != s);
-	return r;*/
-	//TODO, random, nie pierwszy z brzegu...
-	unsigned i = 0;
-	/*do
-	{
-		i++;
-		std::cout << "random #11" <<std::endl;
-		usleep(10000);
-	}*/
+	return r;
+	/*unsigned i = 0;
 	while(this->getQueueStatus(i++) != s);
-	return i - 1;
+	return i - 1;*/
 }
 
 unsigned System::getTick(void) const
