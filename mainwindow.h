@@ -5,6 +5,7 @@
 #include <QThread> //msleep
 #include "/home/vka/workspace/kolejki/src/System.h"
 #include "advanceddialog.h"
+#include "showplotswindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,7 @@ private:
 
     System * s;
     AdvancedDialog * advanced;
+    ShowPlotsWindow * showPlots;
 
     int currentTick; //obecny progress symulacji
 
@@ -34,9 +36,9 @@ private:
     void updatePlots();
     void resetPlots();
 
-    QVector<double> plot1X;
+    QVector<double> plotX, plot2Y;
     QVector< QVector<double> > plot1Y;
-    unsigned plot1MaxY;
+    unsigned plot1MaxY, totalClientsMax;
 
 private slots:
     void on_startStopButton_clicked(void);
@@ -44,6 +46,7 @@ private slots:
     void on_defaultButton_clicked(void);
     void on_advancedButton_clicked(void);
     void on_tickButton_clicked(void);
+    void on_showPlotsButton_clicked(void);
 
 };
 

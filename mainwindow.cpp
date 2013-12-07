@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //tworzenie menu zaawansowanych opcji
     advanced = new AdvancedDialog;
+    showPlots = new ShowPlotsWindow;
 
     s = NULL;
     currentTick = 0;
@@ -31,6 +32,9 @@ MainWindow::~MainWindow()
         delete s;
     if(advanced != NULL)
         delete advanced;
+
+    //if(showPlots != NULL)
+
 
 }
 
@@ -205,8 +209,8 @@ void MainWindow::endSim()
 void MainWindow::makePlots()
 {
     ui->log->append("Odpalanie plotow");
-    plot1X = QVector<double>(ui->simTimeBox->value() + 1);
-    plot1X[0] = 0;
+    plotX = QVector<double>(ui->simTimeBox->value() + 1);
+    plotX[0] = 0;
     plot1Y = QVector< QVector<double> >(ui->queueNumBox->value());
 
     for(int i = 0; i < ui->queueNumBox->value(); i++)
@@ -214,8 +218,12 @@ void MainWindow::makePlots()
         plot1Y[i] = (QVector<double>(ui->simTimeBox->value() + 1));
         plot1Y[i][0] = 0;
         ui->plot1->addGraph();
-        ui->plot1->graph(i)->setData(plot1X, plot1Y[i]);
+        ui->plot1->graph(i)->setData(plotX, plot1Y[i]);
     }
+
+    plot2Y = QVector<double>(ui->simTimeBox->value() + 1);
+    plot2Y[0] = 0;
+
     ui->plot1->xAxis->setLabel("Tick");
     ui->plot1->yAxis->setLabel("Oczekujacy w kolejce");
     ui->plot1->xAxis->setRange(0, 1);
@@ -223,27 +231,52 @@ void MainWindow::makePlots()
     ui->plot1->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     ui->plot1->replot();
 
+    ui->plot2->addGraph();
+    ui->plot2->graph(0)->setData(plotX, plot2Y);
+    ui->plot2->xAxis->setLabel("Tick");
+    ui->plot2->yAxis->setLabel("Klienci w kolejkach");
+    ui->plot2->xAxis->setRange(0, 1);
+    ui->plot2->yAxis->setRange(0, 1);
+    ui->plot2->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->plot2->replot();
+
     plot1MaxY = 0;
+    totalClientsMax = 0;
 }
 
 void MainWindow::updatePlots(void)
 {
-    plot1X[currentTick] = currentTick;
+    plotX[currentTick] = currentTick;
+    plot2Y[currentTick] = 0;
     for(int i = 0; i < ui->queueNumBox->value(); i++)
     {
         unsigned len = s->getQueueLength(i);
         plot1Y[i][currentTick] = len;
+        plot2Y[currentTick] += len;
         if(plot1MaxY < len)
             plot1MaxY = len;
-        ui->plot1->graph(i)->setData(plot1X, plot1Y[i]);
+        ui->plot1->graph(i)->setData(plotX, plot1Y[i]);
     }
+
+    ui->plot2->graph(0)->setData(plotX, plot2Y);
+    if(plot2Y[currentTick] > totalClientsMax)
+        totalClientsMax = plot2Y[currentTick];
 
     ui->plot1->xAxis->setRange(0, currentTick);
     ui->plot1->yAxis->setRange(0, plot1MaxY + 1);
     ui->plot1->replot();
+
+    ui->plot2->xAxis->setRange(0, currentTick);
+    ui->plot2->yAxis->setRange(0, totalClientsMax + 1);
+    ui->plot2->replot();
 }
 
 void MainWindow::resetPlots()
 {
     makePlots();
+}
+
+void MainWindow::on_showPlotsButton_clicked()
+{
+
 }

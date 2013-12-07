@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     saveToFile.cpp \
     Queue.cpp \
     nrand.cpp \
-    Client.cpp
+    Client.cpp \
+    showplotswindow.cpp
 
 HEADERS  += mainwindow.h \
     advanceddialog.h \
@@ -35,10 +36,12 @@ HEADERS  += mainwindow.h \
     randSeed.h \
     Queue.h \
     nrand.h \
-    Client.h
+    Client.h \
+    showplotswindow.h
 
 FORMS    += mainwindow.ui \
-    advanceddialog.ui
+    advanceddialog.ui \
+    showplotswindow.ui
 
 OTHER_FILES += \
     makefile
