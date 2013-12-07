@@ -20,6 +20,9 @@ System::System(void)
 	this->_constRatioToOpenNew = 10;
 	this->_constRatioToCloseExisting = 3;
 	this->_constPosOfChangingQueue = 0.7;
+    this->_constNormalMean = 10;
+    this->_constNormalSTD = 2;
+    this->_constRandSeed = 4491232;
 
 	this->tick = 0;
     this->simulationTime = 10000;
@@ -40,6 +43,9 @@ System::System(unsigned q, unsigned t)
 	this->_constRatioToOpenNew = 10;
 	this->_constRatioToCloseExisting = 3;
 	this->_constPosOfChangingQueue = 0.7;
+    this->_constNormalMean = 10;
+    this->_constNormalSTD = 2;
+    this->_constRandSeed = 4491232;
 
 	this->tick = 0;
     this->simulationTime = t;
@@ -57,21 +63,29 @@ System::System(const System & s)
 	this->_constRatioToOpenNew = s._constRatioToOpenNew;
 	this->_constRatioToCloseExisting = s._constRatioToCloseExisting;
 	this->_constPosOfChangingQueue = s._constPosOfChangingQueue;
-
+    this->_constNormalMean = s._constNormalMean;
+    this->_constNormalSTD = s._constNormalSTD;
 	this->tick = s.tick;
     this->simulationTime = s.simulationTime;
+    this->_constRandSeed = s._constRandSeed;
 }
 
-void System::setParams(double p1, double p2, double p3, double p4)
+void System::setParams(double p1, double p2, double p3, double p4, double p5, double p6, unsigned p7)
 {
 	/*
 	 * ustawia parametry na dane
-	 * tylko do testow
 	 */
 	this->_constNewClients = p1;
 	this->_constRatioToOpenNew = p2;
 	this->_constRatioToCloseExisting = p3;
 	this->_constPosOfChangingQueue = p4;
+    this->_constNormalMean = p5;
+    this->_constNormalSTD = p6;
+
+    if(this->_constRandSeed != p7)
+        rng = boost::mt19937(p7);
+    this->_constRandSeed = p7;
+
 }
 
 void System::update(unsigned ticks)
@@ -194,7 +208,7 @@ void System::simulate(bool oneTick)
 		for(int i = 0; i < newClients; i++)
 		{
 			unsigned k = this->chooseBestQueue();
-			this->queues[k].add(Client(5));//TODO na sztywno
+            this->queues[k].add(Client(nrand(this->_constNormalMean, this->_constNormalSTD)));//TODO na sztywno
 		}
 		this->update();
 		/*
@@ -344,6 +358,12 @@ double System::getParam(int p) const
 		return this->_constRatioToCloseExisting;
 	case 4:
 		return this->_constPosOfChangingQueue;
+    case 5:
+        return this->_constNormalMean;
+    case 6:
+        return this->_constNormalSTD;
+    case 7:
+        return this->_constRandSeed;
 	default:
 		return 0;
 	}

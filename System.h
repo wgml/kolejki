@@ -29,7 +29,7 @@ public:
 	bool isWorking(void) const;
 	unsigned numWorkingQueues(bool = true) const;
 	unsigned numWaitingClients(void) const;
-	void setParams(double, double, double, double);
+    void setParams(double, double, double, double, double, double, unsigned);
 	double getParam(int) const;
 	unsigned getTick(void) const;
     unsigned getSimulationTime(void) const;
@@ -44,6 +44,9 @@ private:
 	double _constRatioToOpenNew;
 	double _constRatioToCloseExisting;
 	double _constPosOfChangingQueue;
+    double _constNormalMean;
+    double _constNormalSTD;
+    unsigned _constRandSeed;
 
 	void update(unsigned = 1);
 	unsigned chooseBestQueue(void) const;

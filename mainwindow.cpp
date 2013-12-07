@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "randSeed.h"
 #include "sleeper.h" //wiadomo...
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -82,7 +83,7 @@ void MainWindow::on_startStopButton_clicked()
         if(s == NULL)
         {
             s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
-            s->setParams(3, 8, 3, 0.7);//TODO
+            s->setParams(3, 8, 3, 0.7, 10, 2, 0);//TODO
             s->start();
         }
 
@@ -201,7 +202,7 @@ void MainWindow::on_tickButton_clicked()
         if(s == NULL)
         {
             s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
-            s->setParams(3, 8, 3, 0.7);//TODO
+            s->setParams(3, 8, 3, 0.7, 10, 2, 0);//TODO
             s->start();
         }
 
@@ -249,6 +250,14 @@ void MainWindow::simulate()
         makePlots();
     else if((currentTick % 100 == 0 || (ui->tickButton->isChecked())))
         updatePlots();
+
+    plotX[currentTick] = currentTick;
+    plot2Y[currentTick] = 0;
+    for(int i = 0; i < ui->queueNumBox->value(); i++)
+    {
+        plot2Y[currentTick] += s->getQueueLength(i);
+        plot1Y[i][currentTick] = s->getQueueLength(i);
+    }
 }
 
 void MainWindow::endSim()
@@ -358,6 +367,13 @@ void MainWindow::updateParams()
 
     ui->log->append(QString("Otrzymano parametry: %1, %2, %3, %4, %5, %6, %7, trzeba coś zrobić")
                     .arg(p1).arg(p2).arg(p3).arg(p4).arg(p5).arg(p6).arg(p7));
+
+    if(s == NULL)
+    {
+        s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
+        s->start();
+    }
+    s->setParams(p1, p2, p3, p4, p5, p6, p7);
 }
 
 void MainWindow::generatePlot(int p)

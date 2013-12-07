@@ -83,7 +83,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="constToOpen">
+            <widget class="QSpinBox" name="constToOpen">
              <property name="minimumSize">
               <size>
                <width>70</width>
@@ -117,7 +117,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="constToClose">
+            <widget class="QSpinBox" name="constToClose">
              <property name="minimumSize">
               <size>
                <width>70</width>
@@ -322,15 +322,7 @@
     </layout>
    </item>
   </layout>
-  <zorder>buttonBox</zorder>
   <zorder></zorder>
-  <zorder>seedValue</zorder>
-  <zorder>horizontalSpacer_11</zorder>
-  <zorder>checkBox</zorder>
-  <zorder>label_9</zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder>resetButton</zorder>
-  <zorder>horizontalSpacer_5</zorder>
  </widget>
  <resources/>
  <connections>
