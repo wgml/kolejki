@@ -22,9 +22,10 @@ System::System(void)
 	this->_constPosOfChangingQueue = 0.7;
 
 	this->tick = 0;
+    this->simulationTime = 10000;
 }
 
-System::System(unsigned i)
+System::System(unsigned q, unsigned t)
 {
 	/*
 	 * inicjuje system z i kolejkami
@@ -32,7 +33,7 @@ System::System(unsigned i)
 	 * i nie pracujacy
 	 */
 	this->queues = std::vector<Queue>();
-	this->queues.insert(this->queues.begin(), i, Queue(CLOSED));
+    this->queues.insert(this->queues.begin(), q, Queue(CLOSED));
 	this->working = false;
 
 	this->_constNewClients = 3;
@@ -41,6 +42,7 @@ System::System(unsigned i)
 	this->_constPosOfChangingQueue = 0.7;
 
 	this->tick = 0;
+    this->simulationTime = t;
 }
 
 System::System(const System & s)
@@ -57,6 +59,7 @@ System::System(const System & s)
 	this->_constPosOfChangingQueue = s._constPosOfChangingQueue;
 
 	this->tick = s.tick;
+    this->simulationTime = s.simulationTime;
 }
 
 void System::setParams(double p1, double p2, double p3, double p4)
@@ -77,10 +80,19 @@ void System::update(unsigned ticks)
 	 * aktualizuje wszystkie dostepne kolejki
 	 * o ticks skokow
 	 */
-	for(std::vector<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
-		if(it->getStatus() == OPEN || it->getStatus() == WILL_CLOSE)
-			it->update(ticks);
-	this->tick += ticks;
+    while(ticks-- > 0)
+    {
+        if(this->tick == this->simulationTime)
+        {
+            this->working = false;
+            return;
+        }
+
+        for(std::vector<Queue>::iterator it = this->queues.begin(); it != this->queues.end(); it++)
+            if(it->getStatus() == OPEN || it->getStatus() == WILL_CLOSE)
+                it->update(1);
+        this->tick += 1;
+    }
 }
 
 unsigned System::numQueues(void) const
@@ -335,4 +347,9 @@ double System::getParam(int p) const
 	default:
 		return 0;
 	}
+}
+
+unsigned System::getSimulationTime(void) const
+{
+    return this->simulationTime;
 }

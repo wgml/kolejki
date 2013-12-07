@@ -60,7 +60,7 @@ void MainWindow::on_startStopButton_clicked()
 
         if(s == NULL)
         {
-            s = new System(ui->queueNumBox->value());
+            s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
             s->setParams(3, 8, 3, 0.7);//TODO
             s->start();
         }
@@ -158,7 +158,7 @@ void MainWindow::on_tickButton_clicked()
 
         if(s == NULL)
         {
-            s = new System(ui->queueNumBox->value());
+            s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
             s->setParams(3, 8, 3, 0.7);//TODO
             s->start();
         }

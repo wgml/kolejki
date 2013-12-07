@@ -14,7 +14,7 @@ class System
 {
 public:
 	System(void);
-	System(unsigned);
+    System(unsigned, unsigned);
 	System(const System &);
 	~System() {};
 
@@ -32,10 +32,13 @@ public:
 	void setParams(double, double, double, double);
 	double getParam(int) const;
 	unsigned getTick(void) const;
+    unsigned getSimulationTime(void) const;
+
 private:
 	std::vector<Queue> queues;
 	bool working;
 	unsigned tick; //ilosc updatow od uruchomienia
+    unsigned simulationTime;
 
 	double _constNewClients;
 	double _constRatioToOpenNew;
