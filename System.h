@@ -8,6 +8,7 @@
 #define SYSTEM_H_
 #include <vector>
 #include <climits> //MAX_INT
+#include <cmath> //exp
 #include "Queue.h"
 #include "urand.h" //do losowania ilosci nowych klientow
 class System

@@ -186,7 +186,7 @@ void System::simulate(bool oneTick)
 	 * jesli tak, do poki stan systemu sie nie zmieni,
 	 * przeprowadza symulacje.
 	 * Najpierw losuje liczbe nowych klientow,
-	 * z prawdopodobienstwem __probOfNewClient.
+     * z prawdopodobienstwem __probOfNewClient * e^... .
 	 * Nastepnie przydziela ich do dnajkrotszych kolejek.
 	 * decyduje, czy nie mozna zamknac nadmiaru kolejek
 	 * jesli iloscCzekajacych/iloscOtwartychKolejek jest mniejsza od jakiegos consta.
@@ -204,7 +204,8 @@ void System::simulate(bool oneTick)
 		/*
 		 * losowanie lowych klientow
 		 */
-		unsigned newClients = urand() * this->_constNewClients;
+        unsigned newClients = urand() * (this->_constNewClients
+            * exp(-0.5*(pow((this->tick - this->simulationTime/2.0)/(0.7 * this->simulationTime/2.0), 2))));
 		for(int i = 0; i < newClients; i++)
 		{
 			unsigned k = this->chooseBestQueue();
