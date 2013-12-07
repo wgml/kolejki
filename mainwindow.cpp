@@ -33,6 +33,8 @@ MainWindow::~MainWindow()
     if(advanced != NULL)
         delete advanced;
 
+    if(showPlots != NULL)
+        delete showPlots;
     //if(showPlots != NULL)
 
 
@@ -119,6 +121,27 @@ void MainWindow::on_advancedButton_clicked()
 {
     advanced->show();
     ui->log->append("Odwolano sie do okna ustawien zaawansowanych...");
+}
+
+void MainWindow::on_showPlotsButton_clicked()
+{
+    if(ui->showPlotsButton->isChecked())
+    {
+        showPlots->show();
+        ui->log->append("Odwolano sie do okna wykresow");
+    }
+    else
+    {
+        showPlots->hide();
+        ui->log->append("Zamknieto okno wykresow");
+    }
+    connect(showPlots, SIGNAL(rejected()),
+            this, SLOT(toogleButtonOnExit()));
+}
+
+void MainWindow::toogleButtonOnExit()
+{
+    ui->showPlotsButton->setChecked(false);
 }
 
 void MainWindow::on_tickButton_clicked()
@@ -274,9 +297,4 @@ void MainWindow::updatePlots(void)
 void MainWindow::resetPlots()
 {
     makePlots();
-}
-
-void MainWindow::on_showPlotsButton_clicked()
-{
-
 }

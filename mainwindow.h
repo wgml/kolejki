@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QThread> //msleep
-#include "/home/vka/workspace/kolejki/src/System.h"
+#include "System.h"
 #include "advanceddialog.h"
 #include "showplotswindow.h"
 
@@ -47,6 +47,9 @@ private slots:
     void on_advancedButton_clicked(void);
     void on_tickButton_clicked(void);
     void on_showPlotsButton_clicked(void);
+
+public slots:
+    void toogleButtonOnExit(void);
 
 };
 

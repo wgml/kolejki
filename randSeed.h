@@ -7,7 +7,7 @@
 
 #ifndef RANDSEED_H_
 #define RANDSEED_H_
-#include <boost/random.hpp>
+#include "boost/random.hpp"
 
 /*
  * deklaracja generatora liczb losowych
