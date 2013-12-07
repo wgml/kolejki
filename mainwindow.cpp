@@ -99,6 +99,7 @@ void MainWindow::on_resetButton_clicked()
         s = NULL;
     }
     currentTick = 0;
+    resetPlots();
 
     ui->log->clear();
 }
@@ -240,4 +241,9 @@ void MainWindow::updatePlots(void)
     ui->plot1->xAxis->setRange(0, currentTick);
     ui->plot1->yAxis->setRange(0, plot1MaxY + 1);
     ui->plot1->replot();
+}
+
+void MainWindow::resetPlots()
+{
+    makePlots();
 }

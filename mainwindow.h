@@ -32,6 +32,7 @@ private:
     void endSim();
     void makePlots();
     void updatePlots();
+    void resetPlots();
 
     QVector<double> plot1X;
     QVector< QVector<double> > plot1Y;
