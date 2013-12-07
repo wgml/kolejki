@@ -15,23 +15,30 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     advanceddialog.cpp \
-    ../../kolejki/src/urand.cpp \
-    ../../kolejki/src/System.cpp \
-    ../../kolejki/src/Queue.cpp \
-    ../../kolejki/src/nrand.cpp \
-    ../../kolejki/src/Client.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    urand.cpp \
+    System.cpp \
+    show.cpp \
+    saveToFile.cpp \
+    Queue.cpp \
+    nrand.cpp \
+    Client.cpp
 
 HEADERS  += mainwindow.h \
     advanceddialog.h \
-    ../../kolejki/src/urand.h \
-    ../../kolejki/src/System.h \
-    ../../kolejki/src/randSeed.h \
-    ../../kolejki/src/Queue.h \
-    ../../kolejki/src/nrand.h \
-    ../../kolejki/src/Client.h \
     qcustomplot.h \
-    sleeper.h
+    sleeper.h \
+    urand.h \
+    System.h \
+    show.h \
+    saveToFile.h \
+    randSeed.h \
+    Queue.h \
+    nrand.h \
+    Client.h
 
 FORMS    += mainwindow.ui \
     advanceddialog.ui
+
+OTHER_FILES += \
+    makefile
