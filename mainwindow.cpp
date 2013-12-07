@@ -138,7 +138,7 @@ void MainWindow::on_tickButton_clicked()
 
         ui->log->append(QString("Kliknieto sim, %1 tickow do symulacji.").arg(ui->tickBox->value()));
         unsigned ticksToGo = ui->tickBox->value();
-        while((ticksToGo-- > 0))
+        while((ticksToGo-- > 0) && ui->tickButton)
         {
             if(currentTick >= ui->simTimeBox->value())
                 break;
