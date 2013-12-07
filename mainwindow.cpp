@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //tworzenie menu zaawansowanych opcji
     advanced = new AdvancedDialog;
-    showPlots = new ShowPlotsWindow;
 
     s = NULL;
     currentTick = 0;
@@ -22,6 +21,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plot1->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot1, "Placeholder #1"));
     ui->plot2->plotLayout()->insertRow(0);
     ui->plot2->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot2, "Placeholder #2"));
+
+    advanced->setDefaults(3, 8, 3, 0.7, 10, 2, 0);
+
+    connect(advanced, SIGNAL(accepted()),
+            this, SLOT(updateParams()));
+
+    connect(this->ui->plotChooser, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(generatePlot(int)));
+
+    p1 = NULL;
+    p2 = NULL;
+    p3 = NULL;
 
 }
 
@@ -33,10 +44,12 @@ MainWindow::~MainWindow()
     if(advanced != NULL)
         delete advanced;
 
-    if(showPlots != NULL)
-        delete showPlots;
-    //if(showPlots != NULL)
-
+    if(p1 != NULL)
+        delete p1;
+    if(p2 != NULL)
+        delete p2;
+    if(p3 != NULL)
+        delete p3;
 
 }
 
@@ -56,7 +69,15 @@ void MainWindow::on_startStopButton_clicked()
         ui->advancedButton->setDisabled(true);
         ui->startStopButton->setText("Stop");
         //zamyka okienko advanced, just in case
-        advanced->hide();
+        if(advanced != NULL)
+            advanced->hide();
+
+        if(p1 != NULL)
+            delete p1;
+        if(p2 != NULL)
+            delete p2;
+        if(p3 != NULL)
+            delete p3;
 
         if(s == NULL)
         {
@@ -99,6 +120,7 @@ void MainWindow::on_resetButton_clicked()
     ui->simProgressBar->setFormat("Oczekiwanie na start");
     ui->tickButton->setChecked(false);
     ui->startStopButton->setChecked(false);
+    ui->plotChooser->setEnabled(false);
     if(s != NULL)
     {
         delete s;
@@ -107,6 +129,23 @@ void MainWindow::on_resetButton_clicked()
     currentTick = 0;
     resetPlots();
 
+    advanced->setDefaults(3, 8, 3, 0.7, 10, 2, 0);
+
+    if(p1 != NULL)
+    {
+        delete p1;
+        p1 = NULL;
+    }
+    if(p2 != NULL)
+    {
+        delete p2;
+        p2 = NULL;
+    }
+    if(p3 != NULL)
+    {
+        delete p3;
+        p3 = NULL;
+    }
     ui->log->clear();
 }
 
@@ -122,27 +161,30 @@ void MainWindow::on_advancedButton_clicked()
     advanced->show();
     ui->log->append("Odwolano sie do okna ustawien zaawansowanych...");
 }
-
+/*
 void MainWindow::on_showPlotsButton_clicked()
 {
     if(ui->showPlotsButton->isChecked())
     {
         showPlots->show();
         ui->log->append("Odwolano sie do okna wykresow");
+        ui->resetButton->setDisabled(true);
     }
     else
     {
         showPlots->hide();
+        ui->resetButton->setEnabled(true);
         ui->log->append("Zamknieto okno wykresow");
     }
     connect(showPlots, SIGNAL(rejected()),
             this, SLOT(toogleButtonOnExit()));
-}
-
+}*/
+/*
 void MainWindow::toogleButtonOnExit()
 {
     ui->showPlotsButton->setChecked(false);
-}
+    ui->resetButton->setEnabled(true);
+}*/
 
 void MainWindow::on_tickButton_clicked()
 {
@@ -225,8 +267,10 @@ void MainWindow::endSim()
     ui->tickBox->setDisabled(true);
     ui->tickButton->setDisabled(true);
     ui->resetButton->setEnabled(true);
+    ui->plotChooser->setEnabled(true);
     ui->log->append("Zakonczono symulacje");
     ui->simProgressBar->setFormat("Symulacja zakonczona");
+    updatePlots();
 }
 
 void MainWindow::makePlots()
@@ -297,4 +341,84 @@ void MainWindow::updatePlots(void)
 void MainWindow::resetPlots()
 {
     makePlots();
+}
+
+void MainWindow::updateParams()
+{
+    double p1, p4, p5, p6;
+    unsigned p2, p3, p7;
+
+    p1 = advanced->getParam(1).toDouble();
+    p2 = advanced->getParam(2).toUInt();
+    p3 = advanced->getParam(3).toUInt();
+    p4 = advanced->getParam(4).toDouble();
+    p5 = advanced->getParam(5).toDouble();
+    p6 = advanced->getParam(6).toDouble();
+    p7 = advanced->getParam(7).toUInt();
+
+    ui->log->append(QString("Otrzymano parametry: %1, %2, %3, %4, %5, %6, %7, trzeba coś zrobić")
+                    .arg(p1).arg(p2).arg(p3).arg(p4).arg(p5).arg(p6).arg(p7));
+}
+
+void MainWindow::generatePlot(int p)
+{
+    ui->log->append(QString("Zarzadano wykresu %1").arg(p));
+
+    QVector<double> p3Y(ui->simTimeBox->value() + 1);
+
+    switch(p)
+    {
+    case 1: // liczba osob w kazdej kolejce
+        if(p1 != NULL)
+            delete p1;
+        p1 = new QCustomPlot;
+
+        p1->xAxis->setLabel("Tick");
+        p1->yAxis->setLabel("Liczba osob w kolejce");
+        for(int i = 0; i < ui->queueNumBox->value(); i++)
+        {
+            p1->addGraph();
+            p1->graph(i)->setData(plotX, plot1Y[i]);
+        }
+        p1->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+        p1->xAxis->setRange(0, ui->simTimeBox->value());
+        p1->yAxis->setRange(0, plot1MaxY);
+        p1->show();
+        break;
+    case 2:
+        if(p2 != NULL)
+            delete p2;
+        p2 = new QCustomPlot;
+
+        p2->xAxis->setLabel("Tick");
+        p2->yAxis->setLabel("Liczba osob w sklepie");
+
+        p2->addGraph();
+        p2->graph(0)->setData(plotX, plot2Y);
+        p2->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+        p2->xAxis->setRange(0, ui->simTimeBox->value());
+        p2->yAxis->setRange(0, totalClientsMax);
+        p2->show();
+        break;
+    case 3:
+        if(p3 != NULL)
+            delete p3;
+        p3 = new QCustomPlot;
+
+        p3->xAxis->setLabel("Tick");
+        p3->yAxis->setLabel("Srednia dlugosc kolejki");
+
+        for(int i = 0; i <= ui->simTimeBox->value(); i++)
+            p3Y[i] = (1. * plot2Y[i]) / ui->queueNumBox->value();
+
+        p3->addGraph();
+        p3->graph(0)->setData(plotX, p3Y);
+        p3->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+        p3->xAxis->setRange(0, ui->simTimeBox->value());
+        p3->yAxis->setRange(0, (1. * totalClientsMax) / ui->queueNumBox->value());
+        p3->show();
+        break;
+    default:
+        break;
+    }
 }

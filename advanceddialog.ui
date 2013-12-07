@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
-    <height>191</height>
+    <width>505</width>
+    <height>193</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -208,7 +208,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QDoubleSpinBox" name="constNormalMean"/>
+              <widget class="QDoubleSpinBox" name="normalMean"/>
              </item>
             </layout>
            </item>
@@ -222,7 +222,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QDoubleSpinBox" name="NormalSTD"/>
+              <widget class="QDoubleSpinBox" name="normalSTD"/>
              </item>
             </layout>
            </item>
@@ -253,25 +253,15 @@
           </spacer>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox">
-           <property name="layoutDirection">
-            <enum>Qt::RightToLeft</enum>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QLineEdit" name="seedValue">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="layoutDirection">
             <enum>Qt::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>default</string>
+            <string>0</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -298,14 +288,38 @@
     </layout>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_10">
+     <item>
+      <widget class="QPushButton" name="resetButton">
+       <property name="text">
+        <string>Reset</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
   <zorder>buttonBox</zorder>
@@ -315,6 +329,8 @@
   <zorder>checkBox</zorder>
   <zorder>label_9</zorder>
   <zorder>verticalSpacer</zorder>
+  <zorder>resetButton</zorder>
+  <zorder>horizontalSpacer_5</zorder>
  </widget>
  <resources/>
  <connections>
@@ -325,12 +341,12 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>183</y>
+     <x>494</x>
+     <y>182</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
-     <y>192</y>
+     <y>190</y>
     </hint>
    </hints>
   </connection>
@@ -342,29 +358,49 @@
    <hints>
     <hint type="sourcelabel">
      <x>325</x>
-     <y>183</y>
+     <y>181</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
-     <y>192</y>
+     <y>190</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>seedValue</receiver>
-   <slot>setEnabled(bool)</slot>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AdvancedDialog</receiver>
+   <slot>setPreviousValues()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>208</x>
-     <y>141</y>
+     <x>446</x>
+     <y>172</y>
     </hint>
     <hint type="destinationlabel">
-     <x>279</x>
-     <y>141</y>
+     <x>437</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>AdvancedDialog</receiver>
+   <slot>savePreviousValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>463</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>463</x>
+     <y>139</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>setPreviousValues()</slot>
+  <slot>savePreviousValues()</slot>
+ </slots>
 </ui>
