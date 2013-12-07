@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plot1->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot1, "Placeholder #1"));
     ui->plot2->plotLayout()->insertRow(0);
     ui->plot2->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot2, "Placeholder #2"));
+
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +58,7 @@ void MainWindow::on_startStopButton_clicked()
             s->setParams(3, 8, 3, 0.7);//TODO
             s->start();
         }
+
         while(currentTick < ui->simTimeBox->value())
         {
             simulate();
@@ -153,7 +155,6 @@ void MainWindow::on_tickButton_clicked()
     }
 }
 
-
 void MainWindow::simulate()
 {
     if(ui->simTimeBox->value() == currentTick)
@@ -174,6 +175,10 @@ void MainWindow::simulate()
     ui->simProgressBar->setValue(100. * currentTick / ui->simTimeBox->value());
     ui->simProgressBar->setFormat(QString("Postep symulacji: %p% (%1/%2)").arg(currentTick).arg(ui->simTimeBox->value()));
 
+    if(currentTick == 1)
+        makePlots();
+    else if((currentTick % 100 == 0 || (ui->tickButton->isChecked())))
+        updatePlots();
 }
 
 void MainWindow::endSim()
@@ -194,4 +199,45 @@ void MainWindow::endSim()
     ui->resetButton->setEnabled(true);
     ui->log->append("Zakonczono symulacje");
     ui->simProgressBar->setFormat("Symulacja zakonczona");
+}
+
+void MainWindow::makePlots()
+{
+    ui->log->append("Odpalanie plotow");
+    plot1X = QVector<double>(ui->simTimeBox->value() + 1);
+    plot1X[0] = 0;
+    plot1Y = QVector< QVector<double> >(ui->queueNumBox->value());
+
+    for(int i = 0; i < ui->queueNumBox->value(); i++)
+    {
+        plot1Y[i] = (QVector<double>(ui->simTimeBox->value() + 1));
+        plot1Y[i][0] = 0;
+        ui->plot1->addGraph();
+        ui->plot1->graph(i)->setData(plot1X, plot1Y[i]);
+    }
+    ui->plot1->xAxis->setLabel("Tick");
+    ui->plot1->yAxis->setLabel("Oczekujacy w kolejce");
+    ui->plot1->xAxis->setRange(0, 1);
+    ui->plot1->yAxis->setRange(0, 1);
+    ui->plot1->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->plot1->replot();
+
+    plot1MaxY = 0;
+}
+
+void MainWindow::updatePlots(void)
+{
+    plot1X[currentTick] = currentTick;
+    for(int i = 0; i < ui->queueNumBox->value(); i++)
+    {
+        unsigned len = s->getQueueLength(i);
+        plot1Y[i][currentTick] = len;
+        if(plot1MaxY < len)
+            plot1MaxY = len;
+        ui->plot1->graph(i)->setData(plot1X, plot1Y[i]);
+    }
+
+    ui->plot1->xAxis->setRange(0, currentTick);
+    ui->plot1->yAxis->setRange(0, plot1MaxY + 1);
+    ui->plot1->replot();
 }

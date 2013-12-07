@@ -29,6 +29,13 @@ private:
     void contSim(void);//symulacja gdy klikniety start
     void nSim(void);//symulacja, gdy n tickow do przesymulowania
     void simulate(void);//symuluje jeden tick, updatuje wykresy?
+    void endSim();
+    void makePlots();
+    void updatePlots();
+
+    QVector<double> plot1X;
+    QVector< QVector<double> > plot1Y;
+    unsigned plot1MaxY;
 
 private slots:
     void on_startStopButton_clicked(void);
@@ -36,7 +43,7 @@ private slots:
     void on_defaultButton_clicked(void);
     void on_advancedButton_clicked(void);
     void on_tickButton_clicked(void);
-    void endSim();
+
 };
 
 #endif // MAINWINDOW_H
