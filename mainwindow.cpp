@@ -9,14 +9,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->simProgressBar->setFormat("Oczekiwanie na start");
-    ui->log->append("Zaladowano UI");
+    ui->log->append(QString::fromUtf8("Załadowano UI"));
 
     //tworzenie menu zaawansowanych opcji
     advanced = new AdvancedDialog;
 
     s = NULL;
     currentTick = 0;
-    ui->log->append("Inicjacja systemu zakonczona");
+    ui->log->append(QString::fromUtf8("Inicjacja systemu zakończona"));
 
     ui->plot1->plotLayout()->insertRow(0);
     ui->plot1->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot1, "Placeholder #1"));
@@ -154,13 +154,13 @@ void MainWindow::on_defaultButton_clicked(void)
 {
     ui->queueNumBox->setValue(10);
     ui->simTimeBox->setValue(10000);
-    ui->log->append("Ustawiono wartosci domyslne.");
+    ui->log->append(QString::fromUtf8("Ustawiono wartości domyślne."));
 }
 
 void MainWindow::on_advancedButton_clicked()
 {
     advanced->show();
-    ui->log->append("Odwolano sie do okna ustawien zaawansowanych...");
+    ui->log->append(QString::fromUtf8("Odwołano się do okna ustawień zaawansowanych..."));
 }
 /*
 void MainWindow::on_showPlotsButton_clicked()
@@ -206,7 +206,7 @@ void MainWindow::on_tickButton_clicked()
             s->start();
         }
 
-        ui->log->append(QString("Kliknieto sim, %1 tickow do symulacji.").arg(ui->tickBox->value()));
+        ui->log->append(QString::fromUtf8("Kliknięto sim, %1 ticków do symulacji.").arg(ui->tickBox->value()));
         unsigned ticksToGo = ui->tickBox->value();
         while((ticksToGo-- > 0) && ui->tickButton)
         {
@@ -221,7 +221,7 @@ void MainWindow::on_tickButton_clicked()
     }
     if(currentTick >= ui->simTimeBox->value())
     {
-        ui->log->append("Symulacja osiagnela limit tickow.");
+        ui->log->append(QString::fromUtf8("Symulacja osiagnęla limit ticków."));
         endSim();
     }
 }
@@ -230,13 +230,13 @@ void MainWindow::simulate()
 {
     if(ui->simTimeBox->value() == currentTick)
     {
-        ui->log->append("Symulacja osiagnela limit tickow");
+        ui->log->append(QString::fromUtf8("Symulacja osiagnęła limit ticków"));
         return;
     }
 
     if(s == NULL)
     {
-        ui->log->append("System nie zostal prawidlowo zainicjowany");
+        ui->log->append(QString::fromUtf8("System nie został prawidłowo zainicjowany"));
         return;
     }
 
@@ -277,14 +277,14 @@ void MainWindow::endSim()
     ui->tickButton->setDisabled(true);
     ui->resetButton->setEnabled(true);
     ui->plotChooser->setEnabled(true);
-    ui->log->append("Zakonczono symulacje");
-    ui->simProgressBar->setFormat("Symulacja zakonczona");
+    ui->log->append(QString::fromUtf8("Zakończono symulację"));
+    ui->simProgressBar->setFormat(QString::fromUtf8("Symulacja zakończona"));
     updatePlots();
 }
 
 void MainWindow::makePlots()
 {
-    ui->log->append("Odpalanie plotow");
+    ui->log->append(QString::fromUtf8("Odpalanie plotów"));
     plotX = QVector<double>(ui->simTimeBox->value() + 1);
     plotX[0] = 0;
     plot1Y = QVector< QVector<double> >(ui->queueNumBox->value());
@@ -301,7 +301,7 @@ void MainWindow::makePlots()
     plot2Y[0] = 0;
 
     ui->plot1->xAxis->setLabel("Tick");
-    ui->plot1->yAxis->setLabel("Oczekujacy w kolejce");
+    ui->plot1->yAxis->setLabel(QString::fromUtf8("Oczekujący w kolejce"));
     ui->plot1->xAxis->setRange(0, 1);
     ui->plot1->yAxis->setRange(0, 1);
     ui->plot1->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
@@ -365,7 +365,7 @@ void MainWindow::updateParams()
     p6 = advanced->getParam(6).toDouble();
     p7 = advanced->getParam(7).toUInt();
 
-    ui->log->append(QString("Otrzymano parametry: %1, %2, %3, %4, %5, %6, %7, trzeba coś zrobić")
+    ui->log->append(QString::fromUtf8("Otrzymano parametry: %1, %2, %3, %4, %5, %6, %7, trzeba coś zrobić")
                     .arg(p1).arg(p2).arg(p3).arg(p4).arg(p5).arg(p6).arg(p7));
 
     if(s == NULL)
@@ -378,7 +378,7 @@ void MainWindow::updateParams()
 
 void MainWindow::generatePlot(int p)
 {
-    ui->log->append(QString("Zarzadano wykresu %1").arg(p));
+    ui->log->append(QString(QString::fromUtf8("Zażądano wykresu %1")).arg(p));
 
     QVector<double> p3Y(ui->simTimeBox->value() + 1);
 
@@ -390,7 +390,7 @@ void MainWindow::generatePlot(int p)
         p1 = new QCustomPlot;
 
         p1->xAxis->setLabel("Tick");
-        p1->yAxis->setLabel("Liczba osob w kolejce");
+        p1->yAxis->setLabel(QString::fromUtf8("Liczba osób w kolejce"));
         for(int i = 0; i < ui->queueNumBox->value(); i++)
         {
             p1->addGraph();
@@ -399,6 +399,10 @@ void MainWindow::generatePlot(int p)
         p1->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
         p1->xAxis->setRange(0, ui->simTimeBox->value());
         p1->yAxis->setRange(0, plot1MaxY);
+        p1->setGeometry(QRect(100, 100, 800, 200));
+        p1->setWindowTitle(QString::fromUtf8("Liczebność kolejek"));
+        p1->legend->setVisible(true);
+        p1->legend->setFont(QFont("Helvetica",9));
         p1->show();
         break;
     case 2:
@@ -407,13 +411,15 @@ void MainWindow::generatePlot(int p)
         p2 = new QCustomPlot;
 
         p2->xAxis->setLabel("Tick");
-        p2->yAxis->setLabel("Liczba osob w sklepie");
+        p2->yAxis->setLabel(QString::fromUtf8("Liczba osób w sklepie"));
 
         p2->addGraph();
         p2->graph(0)->setData(plotX, plot2Y);
         p2->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
         p2->xAxis->setRange(0, ui->simTimeBox->value());
         p2->yAxis->setRange(0, totalClientsMax);
+        p2->setGeometry(QRect(100, 300, 800, 200));
+        p2->setWindowTitle(QString::fromUtf8("Liczba osób w sklepie"));
         p2->show();
         break;
     case 3:
@@ -422,7 +428,7 @@ void MainWindow::generatePlot(int p)
         p3 = new QCustomPlot;
 
         p3->xAxis->setLabel("Tick");
-        p3->yAxis->setLabel("Srednia dlugosc kolejki");
+        p3->yAxis->setLabel(QString::fromUtf8("Średnia długość kolejki"));
 
         for(int i = 0; i <= ui->simTimeBox->value(); i++)
             p3Y[i] = (1. * plot2Y[i]) / ui->queueNumBox->value();
@@ -432,6 +438,10 @@ void MainWindow::generatePlot(int p)
         p3->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
         p3->xAxis->setRange(0, ui->simTimeBox->value());
         p3->yAxis->setRange(0, (1. * totalClientsMax) / ui->queueNumBox->value());
+
+
+        p3->setGeometry(QRect(100, 500, 800, 200));
+        p3->setWindowTitle(QString::fromUtf8("Średnia długość kolejki"));
         p3->show();
         break;
     default:
