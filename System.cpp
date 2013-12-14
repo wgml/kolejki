@@ -83,7 +83,7 @@ void System::setParams(double p1, double p2, double p3, double p4, double p5, do
     this->_constNormalSTD = p6;
 
     if(this->_constRandSeed != p7)
-        rng = boost::mt19937(p7);
+        rng = std::mt19937(p7);
     this->_constRandSeed = p7;
 
 }

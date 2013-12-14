@@ -9,10 +9,10 @@
 
 unsigned nrand(double mean, double dev)
 {
-	boost::normal_distribution<> nd(mean, dev);
-	boost::variate_generator<boost::mt19937&,boost::normal_distribution<> > var_nor(rng, nd);
+    std::normal_distribution<double> nd(mean, dev);
+    //boost::variate_generator<boost::mt19937&,boost::normal_distribution<> > var_nor(rng, nd);
 
-	double wartosc = var_nor();
+    double wartosc = nd(rng);
 
 	if(wartosc >= 0)
 		return (int) wartosc;

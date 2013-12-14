@@ -5,7 +5,7 @@
  *      Author: vka
  */
 #include "show.h"
-
+/*
 void show(const System & s)
 {
 	unsigned widthL = 38;
@@ -53,5 +53,5 @@ void show(const System & s)
 		std::cout << std::endl;
 	}
 	std::cout << "| " << std::string(widthL + widthR, '-') << " |" << std::endl << std::endl;
-}
+}*/
 

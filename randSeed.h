@@ -7,11 +7,11 @@
 
 #ifndef RANDSEED_H_
 #define RANDSEED_H_
-#include "boost/random.hpp"
-
+//#include "boost/random.hpp"
+#include <random>
 /*
  * deklaracja generatora liczb losowych
  */
 
-static boost::mt19937 rng = boost::mt19937(38190123); //TODO sztywny seed*/
+static std::mt19937 rng = std::mt19937(123123); //TODO sztywny seed*/
 #endif /* RANDSEED_H_ */

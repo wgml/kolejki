@@ -6,10 +6,8 @@
  */
 
 #include "urand.h"
-
 double urand(double start, double end)
 {
-	boost::uniform_real<> nd(start, end);
-	boost::variate_generator<boost::mt19937&,boost::uniform_real<> > var_nor(rng, nd);
-	return var_nor();
+    std::uniform_real_distribution<> ud(start, end);
+    return ud(rng);
 }
