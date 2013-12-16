@@ -5,7 +5,7 @@
 #include <QIntValidator>
 
 namespace Ui {
-class AdvancedDialog;
+    class AdvancedDialog;
 }
 
 class AdvancedDialog : public QDialog

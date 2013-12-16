@@ -8,7 +8,6 @@
 #ifndef NRAND_H_
 #define NRAND_H_
 
-//#include "boost/random/normal_distribution.hpp"
 #include "randSeed.h"
 
 unsigned nrand(double mean = 0.0, double dev = 1.0);

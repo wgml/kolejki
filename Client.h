@@ -12,7 +12,7 @@ class Client
 {
 public:
 	Client(void) : serviceTime(nrand(10, 2)) {};
-	Client(int i) : serviceTime(i) {};//TODO do testow
+    Client(int i) : serviceTime(i) {};
 	Client(const Client &);
 	~Client(void) {};
 	unsigned getServiceTime(void) const;
@@ -20,7 +20,7 @@ public:
 
 private:
 	unsigned serviceTime;
-	//todo pola statyczne z wartosciami dla generatora
+    //todo pola statyczne z wartosciami dla generatora
 };
 
 

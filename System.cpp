@@ -328,9 +328,6 @@ unsigned System::getRandomQueue(STATUS s) const
 		r = ((unsigned) urand(0, this->numQueues())) % this->numQueues();
 	while(this->getQueueStatus(r) != s);
 	return r;
-	/*unsigned i = 0;
-	while(this->getQueueStatus(i++) != s);
-	return i - 1;*/
 }
 
 unsigned System::getTick(void) const

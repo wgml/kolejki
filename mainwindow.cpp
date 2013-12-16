@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "randSeed.h"
-#include "sleeper.h" //wiadomo...
+#include <QWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,10 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     currentTick = 0;
     ui->log->append(QString::fromUtf8("Inicjacja systemu zakończona"));
 
-    ui->plot1->plotLayout()->insertRow(0);
-    ui->plot1->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot1, "Placeholder #1"));
     ui->plot2->plotLayout()->insertRow(0);
-    ui->plot2->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot2, "Placeholder #2"));
+    ui->plot2->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot2, QString::fromUtf8("Ilość klientów w czasie")));
 
     advanced->setDefaults(3, 8, 3, 0.7, 10, 2, 0);
 
@@ -34,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     p1 = NULL;
     p2 = NULL;
     p3 = NULL;
+    p4 = NULL;
 
 }
 
@@ -51,7 +50,8 @@ MainWindow::~MainWindow()
         delete p2;
     if(p3 != NULL)
         delete p3;
-
+    if(p4 != NULL)
+        delete p4;
 }
 
 void MainWindow::on_startStopButton_clicked()
@@ -122,6 +122,7 @@ void MainWindow::on_resetButton_clicked()
     ui->tickButton->setChecked(false);
     ui->startStopButton->setChecked(false);
     ui->plotChooser->setEnabled(false);
+    ui->plotChooser->setCurrentIndex(0);
     if(s != NULL)
     {
         delete s;
@@ -147,6 +148,11 @@ void MainWindow::on_resetButton_clicked()
         delete p3;
         p3 = NULL;
     }
+    if(p4 != NULL)
+    {
+        delete p4;
+        p4 = NULL;
+    }
     ui->log->clear();
 }
 
@@ -162,30 +168,6 @@ void MainWindow::on_advancedButton_clicked()
     advanced->show();
     ui->log->append(QString::fromUtf8("Odwołano się do okna ustawień zaawansowanych..."));
 }
-/*
-void MainWindow::on_showPlotsButton_clicked()
-{
-    if(ui->showPlotsButton->isChecked())
-    {
-        showPlots->show();
-        ui->log->append("Odwolano sie do okna wykresow");
-        ui->resetButton->setDisabled(true);
-    }
-    else
-    {
-        showPlots->hide();
-        ui->resetButton->setEnabled(true);
-        ui->log->append("Zamknieto okno wykresow");
-    }
-    connect(showPlots, SIGNAL(rejected()),
-            this, SLOT(toogleButtonOnExit()));
-}*/
-/*
-void MainWindow::toogleButtonOnExit()
-{
-    ui->showPlotsButton->setChecked(false);
-    ui->resetButton->setEnabled(true);
-}*/
 
 void MainWindow::on_tickButton_clicked()
 {
@@ -253,11 +235,18 @@ void MainWindow::simulate()
 
     plotX[currentTick] = currentTick;
     plot2Y[currentTick] = 0;
+
     for(int i = 0; i < ui->queueNumBox->value(); i++)
     {
         plot2Y[currentTick] += s->getQueueLength(i);
         plot1Y[i][currentTick] = s->getQueueLength(i);
     }
+    plot4Y[currentTick] = 0;
+    for(int i = 0; i < ui->queueNumBox->value(); i++)
+        plot4Y[currentTick] += s->getQueueTime(i);
+
+    int bakNum;
+    plot4Y[currentTick] = 1.0 * plot4Y[currentTick] / (((bakNum = s->numWorkingQueues()) != 0) ? bakNum : 1);
 }
 
 void MainWindow::endSim()
@@ -293,19 +282,21 @@ void MainWindow::makePlots()
     {
         plot1Y[i] = (QVector<double>(ui->simTimeBox->value() + 1));
         plot1Y[i][0] = 0;
-        ui->plot1->addGraph();
-        ui->plot1->graph(i)->setData(plotX, plot1Y[i]);
+        //ui->plot1->addGraph();
+        //ui->plot1->graph(i)->setData(plotX, plot1Y[i]);
     }
 
     plot2Y = QVector<double>(ui->simTimeBox->value() + 1);
     plot2Y[0] = 0;
-
+    plot4Y = QVector<double>(ui->simTimeBox->value() + 1);
+    plot4Y[0] = 0;
+/*
     ui->plot1->xAxis->setLabel("Tick");
     ui->plot1->yAxis->setLabel(QString::fromUtf8("Oczekujący w kolejce"));
     ui->plot1->xAxis->setRange(0, 1);
     ui->plot1->yAxis->setRange(0, 1);
     ui->plot1->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-    ui->plot1->replot();
+    ui->plot1->replot();*/
 
     ui->plot2->addGraph();
     ui->plot2->graph(0)->setData(plotX, plot2Y);
@@ -331,16 +322,16 @@ void MainWindow::updatePlots(void)
         plot2Y[currentTick] += len;
         if(plot1MaxY < len)
             plot1MaxY = len;
-        ui->plot1->graph(i)->setData(plotX, plot1Y[i]);
+        //ui->plot1->graph(i)->setData(plotX, plot1Y[i]);
     }
 
     ui->plot2->graph(0)->setData(plotX, plot2Y);
     if(plot2Y[currentTick] > totalClientsMax)
         totalClientsMax = plot2Y[currentTick];
 
-    ui->plot1->xAxis->setRange(0, currentTick);
+   /* ui->plot1->xAxis->setRange(0, currentTick);
     ui->plot1->yAxis->setRange(0, plot1MaxY + 1);
-    ui->plot1->replot();
+    ui->plot1->replot();*/
 
     ui->plot2->xAxis->setRange(0, currentTick);
     ui->plot2->yAxis->setRange(0, totalClientsMax + 1);
@@ -385,6 +376,7 @@ void MainWindow::generatePlot(int p)
     switch(p)
     {
     case 1: // liczba osob w kazdej kolejce
+    {
         if(p1 != NULL)
             delete p1;
         p1 = new QCustomPlot;
@@ -404,6 +396,7 @@ void MainWindow::generatePlot(int p)
         p1->legend->setVisible(true);
         p1->legend->setFont(QFont("Helvetica",9));
         p1->show();
+    }
         break;
     case 2:
         if(p2 != NULL)
@@ -443,6 +436,32 @@ void MainWindow::generatePlot(int p)
         p3->setGeometry(QRect(100, 500, 800, 200));
         p3->setWindowTitle(QString::fromUtf8("Średnia długość kolejki"));
         p3->show();
+        break;
+    case 4:
+        if(p4 != NULL)
+            delete p4;
+        p4 = new QCustomPlot;
+
+        p4->xAxis->setLabel("Tick");
+        p4->yAxis->setLabel(QString::fromUtf8("Średni czas oczekiwania w kolejce"));
+
+        p4->addGraph();
+        p4->graph(0)->setData(plotX, plot4Y);
+        p4->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+        p4->xAxis->setRange(0, ui->simTimeBox->value());
+
+        {
+           double max = 0;
+           for(unsigned i = 0; i < plot4Y.size(); i++)
+                if(max < plot4Y[i])
+                    max = plot4Y[i];
+
+            p4->yAxis->setRange(0, max);
+        }
+        p4->setGeometry(QRect(100, 500, 800, 200));
+        p4->setWindowTitle(QString::fromUtf8("Średnia czas oczekiwania w kolejce"));
+        p4->show();
+        break;
         break;
     default:
         break;

@@ -83,22 +83,6 @@ void Queue::setStatus(STATUS s)
 
 void Queue::update(unsigned ticks)
 {
-	/*unsigned timeNeeded = this->queue.front().getServiceTime();
-	if(ticks + this->currentClientTime < timeNeeded)
-	{
-		this->currentClientTime += ticks;
-		this->totalNeededTime -= ticks;
-	}
-
-	else
-	{
-
-		this->currentClientTime = 0;
-		this->totalNeededTime -= ticks;
-		std::cout << "usuwanie";
-		this->queue.pop();
-		this->update(ticks - timeNeeded);
-	}*/
 	while(ticks > 0 && this->getLength() > 0)
 	{
 		if(this->getTotalTime() == 0)

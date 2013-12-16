@@ -2,11 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QThread> //msleep
 #include "qcustomplot.h"
 #include "System.h"
 #include "advanceddialog.h"
-//#include "showplotswindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -36,11 +34,11 @@ private:
     void updatePlots();
     void resetPlots();
 
-    QVector<double> plotX, plot2Y;
+    QVector<double> plotX, plot2Y, plot4Y;
     QVector< QVector<double> > plot1Y;
     unsigned plot1MaxY, totalClientsMax;
 
-    QCustomPlot * p1, * p2, * p3;
+    QCustomPlot * p1, * p2, * p3, * p4;
 
 private slots:
     void on_startStopButton_clicked(void);

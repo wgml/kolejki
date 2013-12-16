@@ -18,30 +18,22 @@ SOURCES += main.cpp\
     qcustomplot.cpp \
     urand.cpp \
     System.cpp \
-    show.cpp \
-    saveToFile.cpp \
     Queue.cpp \
     nrand.cpp \
-    Client.cpp \
-    showplotswindow.cpp
+    Client.cpp
 
 HEADERS  += mainwindow.h \
     advanceddialog.h \
     qcustomplot.h \
-    sleeper.h \
     urand.h \
     System.h \
-    show.h \
-    saveToFile.h \
     randSeed.h \
     Queue.h \
     nrand.h \
     Client.h \
-    showplotswindow.h \
 
 FORMS    += mainwindow.ui \
-    advanceddialog.ui \
-    showplotswindow.ui
+    advanceddialog.ui
 
 OTHER_FILES += \
     makefile
