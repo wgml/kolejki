@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "randSeed.h"
 #include <QWidget>
+#include <QUrl>
+#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,13 +23,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plot2->plotLayout()->insertRow(0);
     ui->plot2->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->plot2, QString::fromUtf8("Ilość klientów w czasie")));
 
-    advanced->setDefaults(3, 8, 3, 0.7, 10, 2, 0);
+    advanced->setDefaults(3, 8, 3, 0.7, 10, 2, 0.7, 0);
 
     connect(advanced, SIGNAL(accepted()),
             this, SLOT(updateParams()));
 
     connect(this->ui->plotChooser, SIGNAL(currentIndexChanged(int)),
             this, SLOT(generatePlot(int)));
+
+    connect(this->ui->help, SIGNAL(triggered()),
+            this, SLOT(showHelp()));
 
     p1 = NULL;
     p2 = NULL;
@@ -83,7 +88,7 @@ void MainWindow::on_startStopButton_clicked()
         if(s == NULL)
         {
             s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
-            s->setParams(3, 8, 3, 0.7, 10, 2, 0);//TODO
+            s->setParams(3, 8, 3, 0.7, 10, 2, 0.7, 0);//TODO
             s->start();
         }
 
@@ -131,7 +136,7 @@ void MainWindow::on_resetButton_clicked()
     currentTick = 0;
     resetPlots();
 
-    advanced->setDefaults(3, 8, 3, 0.7, 10, 2, 0);
+    advanced->setDefaults(3, 8, 3, 0.7, 10, 2, 0.7, 0);
 
     if(p1 != NULL)
     {
@@ -184,7 +189,7 @@ void MainWindow::on_tickButton_clicked()
         if(s == NULL)
         {
             s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
-            s->setParams(3, 8, 3, 0.7, 10, 2, 0);//TODO
+            s->setParams(3, 8, 3, 0.7, 10, 2, 0.7, 0);//TODO
             s->start();
         }
 
@@ -273,6 +278,14 @@ void MainWindow::endSim()
 
 void MainWindow::makePlots()
 {
+    plotX.clear();
+    plot1Y.clear();
+    for(int i = 0; i < plot1Y.size(); i++)
+    {
+        plot1Y[i].clear();
+    }
+    plot2Y.clear();
+    plot4Y.clear();
     ui->log->append(QString::fromUtf8("Odpalanie plotów"));
     plotX = QVector<double>(ui->simTimeBox->value() + 1);
     plotX[0] = 0;
@@ -345,8 +358,8 @@ void MainWindow::resetPlots()
 
 void MainWindow::updateParams()
 {
-    double p1, p4, p5, p6;
-    unsigned p2, p3, p7;
+    double p1, p4, p5, p6, p7;
+    unsigned p2, p3, p8;
 
     p1 = advanced->getParam(1).toDouble();
     p2 = advanced->getParam(2).toUInt();
@@ -354,17 +367,18 @@ void MainWindow::updateParams()
     p4 = advanced->getParam(4).toDouble();
     p5 = advanced->getParam(5).toDouble();
     p6 = advanced->getParam(6).toDouble();
-    p7 = advanced->getParam(7).toUInt();
+    p7 = advanced->getParam(7).toDouble();
+    p8 = advanced->getParam(8).toUInt();
 
-    ui->log->append(QString::fromUtf8("Otrzymano parametry: %1, %2, %3, %4, %5, %6, %7, trzeba coś zrobić")
-                    .arg(p1).arg(p2).arg(p3).arg(p4).arg(p5).arg(p6).arg(p7));
+    ui->log->append(QString::fromUtf8("Otrzymano parametry: %1, %2, %3, %4, %5, %6, %7, %8, trzeba coś zrobić")
+                    .arg(p1).arg(p2).arg(p3).arg(p4).arg(p5).arg(p6).arg(p7).arg(p8));
 
     if(s == NULL)
     {
         s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
         s->start();
     }
-    s->setParams(p1, p2, p3, p4, p5, p6, p7);
+    s->setParams(p1, p2, p3, p4, p5, p6, p7, p8);
 }
 
 void MainWindow::generatePlot(int p)
@@ -466,4 +480,10 @@ void MainWindow::generatePlot(int p)
     default:
         break;
     }
+}
+
+void MainWindow::showHelp()
+{
+    ui->log->append(QString::fromUtf8("Ładowanie pliku pomocy."));
+    QDesktopServices::openUrl(QUrl("help.pdf", QUrl::TolerantMode));
 }

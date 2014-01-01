@@ -22,6 +22,7 @@ System::System(void)
 	this->_constPosOfChangingQueue = 0.7;
     this->_constNormalMean = 10;
     this->_constNormalSTD = 2;
+    this->_constSpreadRate = 0.7;
     this->_constRandSeed = 4491232;
 
 	this->tick = 0;
@@ -45,6 +46,7 @@ System::System(unsigned q, unsigned t)
 	this->_constPosOfChangingQueue = 0.7;
     this->_constNormalMean = 10;
     this->_constNormalSTD = 2;
+    this->_constSpreadRate = 0.7;
     this->_constRandSeed = 4491232;
 
 	this->tick = 0;
@@ -65,12 +67,13 @@ System::System(const System & s)
 	this->_constPosOfChangingQueue = s._constPosOfChangingQueue;
     this->_constNormalMean = s._constNormalMean;
     this->_constNormalSTD = s._constNormalSTD;
+    this->_constSpreadRate = s._constSpreadRate;
 	this->tick = s.tick;
     this->simulationTime = s.simulationTime;
     this->_constRandSeed = s._constRandSeed;
 }
 
-void System::setParams(double p1, double p2, double p3, double p4, double p5, double p6, unsigned p7)
+void System::setParams(double p1, double p2, double p3, double p4, double p5, double p6, double p7, unsigned p8)
 {
 	/*
 	 * ustawia parametry na dane
@@ -81,10 +84,11 @@ void System::setParams(double p1, double p2, double p3, double p4, double p5, do
 	this->_constPosOfChangingQueue = p4;
     this->_constNormalMean = p5;
     this->_constNormalSTD = p6;
+    this->_constSpreadRate = p7;
 
-    if(this->_constRandSeed != p7)
-        rng = std::mt19937(p7);
-    this->_constRandSeed = p7;
+    if(this->_constRandSeed != p8)
+        rng = std::mt19937(p8);
+    this->_constRandSeed = p8;
 
 }
 
@@ -205,7 +209,7 @@ void System::simulate(bool oneTick)
 		 * losowanie lowych klientow
 		 */
         unsigned newClients = urand() * (this->_constNewClients
-            * exp(-0.5*(pow((this->tick - this->simulationTime/2.0)/(0.7 * this->simulationTime/2.0), 2))));
+            * exp(-0.5*(pow((this->tick - this->simulationTime/2.0)/(_constSpreadRate * this->simulationTime/2.0), 2))));
 		for(int i = 0; i < newClients; i++)
 		{
 			unsigned k = this->chooseBestQueue();
@@ -361,6 +365,8 @@ double System::getParam(int p) const
     case 6:
         return this->_constNormalSTD;
     case 7:
+        return this->_constSpreadRate;
+    case 8:
         return this->_constRandSeed;
 	default:
 		return 0;

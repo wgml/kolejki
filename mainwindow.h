@@ -49,6 +49,7 @@ private slots:
    // void on_showPlotsButton_clicked(void);
     void updateParams(void);
     void generatePlot(int);
+    void showHelp(void);
 
 public slots:
     //void toogleButtonOnExit(void);

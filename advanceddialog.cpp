@@ -16,7 +16,7 @@ AdvancedDialog::~AdvancedDialog()
     delete ui;
 }
 
-void AdvancedDialog::setDefaults(double p1, unsigned p2, unsigned p3, double p4, double p5, double p6, unsigned p7)
+void AdvancedDialog::setDefaults(double p1, unsigned p2, unsigned p3, double p4, double p5, double p6, double p7, unsigned p8)
 {
     ui->constNewClients->setValue(p1);
     ui->constToOpen->setValue(p2);
@@ -24,14 +24,15 @@ void AdvancedDialog::setDefaults(double p1, unsigned p2, unsigned p3, double p4,
     ui->constChanging->setValue(p4);
     ui->normalMean->setValue(p5);
     ui->normalSTD->setValue(p6);
-    ui->seedValue->setText(QString::number(p7));
+    ui->constSpreadRate->setValue(p7);
+    ui->seedValue->setText(QString::number(p8));
 
     savePreviousValues();
 }
 
 void AdvancedDialog::on_resetButton_clicked()
 {
-    setDefaults(3, 8, 3, 0.7, 10, 2, 0);
+    setDefaults(3, 8, 3, 0.7, 10, 2, 0.7, 0);
 }
 
 void AdvancedDialog::savePreviousValues()
@@ -42,7 +43,8 @@ void AdvancedDialog::savePreviousValues()
     param4 = ui->constChanging->value();
     param5 = ui->normalMean->value();
     param6 = ui->normalSTD->value();
-    param7 = QString(ui->seedValue->text()).toInt();
+    param7 = ui->constSpreadRate->value();
+    param8 = QString(ui->seedValue->text()).toInt();
 }
 
 void AdvancedDialog::setPreviousValues()
@@ -53,7 +55,8 @@ void AdvancedDialog::setPreviousValues()
     ui->constChanging->setValue(param4);
     ui->normalMean->setValue(param5);
     ui->normalSTD->setValue(param6);
-    ui->seedValue->setText(QString::number(param7));
+    ui->constSpreadRate->setValue(param7);
+    ui->seedValue->setText(QString::number(param8));
 }
 
 QString AdvancedDialog::getParam(unsigned p)
@@ -79,6 +82,9 @@ QString AdvancedDialog::getParam(unsigned p)
         return QString::number(ui->normalSTD->value());
         break;
     case 7:
+        return QString::number(ui->constSpreadRate->value());
+        break;
+    case 8:
         return QString(ui->seedValue->text());
         break;
     default:

@@ -16,15 +16,15 @@ public:
     explicit AdvancedDialog(QWidget *parent = 0);
     ~AdvancedDialog();
 
-    void setDefaults(double, unsigned, unsigned, double, double, double, unsigned);
+    void setDefaults(double, unsigned, unsigned, double, double, double, double, unsigned);
 
     QString getParam(unsigned);
     
 private:
     Ui::AdvancedDialog *ui;
 
-    double param1, param4, param5, param6;
-    unsigned param2, param3, param7;
+    double param1, param4, param5, param6, param7;
+    unsigned param2, param3, param8;
 
 private slots:
     void on_resetButton_clicked();

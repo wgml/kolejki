@@ -17,7 +17,7 @@ public:
 	System(void);
     System(unsigned, unsigned);
 	System(const System &);
-	~System() {};
+    //~System() {};
 
 	void simulate(bool = true);
 
@@ -30,7 +30,7 @@ public:
 	bool isWorking(void) const;
 	unsigned numWorkingQueues(bool = true) const;
 	unsigned numWaitingClients(void) const;
-    void setParams(double, double, double, double, double, double, unsigned);
+    void setParams(double, double, double, double, double, double, double, unsigned);
 	double getParam(int) const;
 	unsigned getTick(void) const;
     unsigned getSimulationTime(void) const;
@@ -47,6 +47,7 @@ private:
 	double _constPosOfChangingQueue;
     double _constNormalMean;
     double _constNormalSTD;
+    double _constSpreadRate;
     unsigned _constRandSeed;
 
 	void update(unsigned = 1);

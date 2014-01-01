@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>727</width>
-    <height>555</height>
+    <width>738</width>
+    <height>595</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -137,7 +137,7 @@
              <number>1</number>
             </property>
             <property name="maximum">
-             <number>100000</number>
+             <number>50000</number>
             </property>
             <property name="singleStep">
              <number>100</number>
@@ -177,7 +177,7 @@
              <number>1</number>
             </property>
             <property name="maximum">
-             <number>100000</number>
+             <number>50000</number>
             </property>
             <property name="singleStep">
              <number>100</number>
@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>727</width>
+     <width>738</width>
      <height>25</height>
     </rect>
    </property>
@@ -440,7 +440,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>?</string>
     </property>
-    <addaction name="action_2"/>
+    <addaction name="help"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -458,9 +458,9 @@ p, li { white-space: pre-wrap; }
     <string>?</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="help">
    <property name="text">
-    <string>?</string>
+    <string>Pokaż pomoc</string>
    </property>
   </action>
  </widget>
