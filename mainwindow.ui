@@ -476,9 +476,7 @@ p, li { white-space: pre-wrap; }
    </layout>
    <zorder>log</zorder>
    <zorder>simProgressBar</zorder>
-   <zorder>interactCheckbox</zorder>
    <zorder></zorder>
-   <zorder>horizontalSpacer_4</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -655,5 +653,40 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>queueNumBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateParams()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>397</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>97</x>
+     <y>104</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>simTimeBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateParams()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>396</x>
+     <y>95</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>59</x>
+     <y>81</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>updateParams()</slot>
+ </slots>
 </ui>

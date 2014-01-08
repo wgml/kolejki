@@ -516,6 +516,15 @@ void MainWindow::updateParams()
         s->start();
     }
     s->setParams(p1, p2, p3, p4, p5, p6, p7, p8);
+
+    plotX = QVector<double>(ui->simTimeBox->value() + 1);
+    plot2Y = QVector<double>(ui->simTimeBox->value() + 1);
+    plot4Y = QVector<double>(ui->simTimeBox->value() + 1);
+    plot5Y = QVector<double>(ui->simTimeBox->value() + 1);
+    plot1Y = QVector< QVector<double> >(ui->queueNumBox->value());
+    for(int i = 0; i < ui->queueNumBox->value(); i++)
+        plot1Y[i] = QVector<double>(ui->simTimeBox->value() + 1);
+    makePlots();
 }
 
 void MainWindow::generatePlot(int p)

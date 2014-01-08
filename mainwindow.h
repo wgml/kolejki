@@ -49,16 +49,11 @@ private slots:
     void on_defaultButton_clicked(void);
     void on_advancedButton_clicked(void);
     void on_tickButton_clicked(void);
-   // void on_showPlotsButton_clicked(void);
     void updateParams(void);
     void generatePlot(int);
     void showHelp(void);
 
     void simulate(void);//symuluje jeden tick, updatuje wykresy?
-
-public slots:
-    //void toogleButtonOnExit(void);
-
 
 };
 
