@@ -71,7 +71,7 @@ void MainWindow::on_startStopButton_clicked()
 {
     if(currentTick == 0)
         updateParams();
-    if(!ui->interactCheckbox->isChecked())
+    /*if(!ui->interactCheckbox->isChecked())
     {
         if(p1 != NULL)
             delete p1;
@@ -84,7 +84,7 @@ void MainWindow::on_startStopButton_clicked()
         if(p5 != NULL)
             delete p5;
         p1 = p2 = p3 = p4 = NULL;
-    }
+    }*/
 
     ui->log->append(ui->startStopButton->isChecked() ? "Start symulacji" : "Stop symulacji");
     /*
