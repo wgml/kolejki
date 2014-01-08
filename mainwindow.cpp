@@ -69,6 +69,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_startStopButton_clicked()
 {
+    if(currentTick == 0)
+        updateParams();
     if(!ui->interactCheckbox->isChecked())
     {
         if(p1 != NULL)
