@@ -377,3 +377,8 @@ unsigned System::getSimulationTime(void) const
 {
     return this->simulationTime;
 }
+
+unsigned System::getCurrentTIck() const
+{
+    return this->tick;
+}

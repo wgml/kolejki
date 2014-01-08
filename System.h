@@ -34,6 +34,7 @@ public:
 	double getParam(int) const;
 	unsigned getTick(void) const;
     unsigned getSimulationTime(void) const;
+    unsigned getCurrentTIck(void) const;
 
 private:
 	std::vector<Queue> queues;

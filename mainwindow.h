@@ -10,6 +10,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class QTimer;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -23,22 +25,23 @@ private:
 
     System * s;
     AdvancedDialog * advanced;
+    QTimer * timer;
 
-    int currentTick; //obecny progress symulacji
+    int currentTick; //obecny progres symulacji
 
     void contSim(void);//symulacja gdy klikniety start
     void nSim(void);//symulacja, gdy n tickow do przesymulowania
-    void simulate(void);//symuluje jeden tick, updatuje wykresy?
+
     void endSim();
     void makePlots();
     void updatePlots();
     void resetPlots();
 
-    QVector<double> plotX, plot2Y, plot4Y;
+    QVector<double> plotX, plot2Y, plot4Y, plot5Y;
     QVector< QVector<double> > plot1Y;
     unsigned plot1MaxY, totalClientsMax;
 
-    QCustomPlot * p1, * p2, * p3, * p4;
+    QCustomPlot * p1, * p2, * p3, * p4, *p5;
 
 private slots:
     void on_startStopButton_clicked(void);
@@ -50,6 +53,8 @@ private slots:
     void updateParams(void);
     void generatePlot(int);
     void showHelp(void);
+
+    void simulate(void);//symuluje jeden tick, updatuje wykresy?
 
 public slots:
     //void toogleButtonOnExit(void);
