@@ -220,6 +220,9 @@ void MainWindow::on_tickButton_clicked()
 {
     if(ui->tickButton->isChecked())
     {
+        if(currentTick == 0)
+            updateParams();
+
         ui->queueNumBox->setDisabled(true);
         ui->ququeNumSlider->setDisabled(true);
         ui->simTimeBox->setDisabled(true);
@@ -557,6 +560,12 @@ void MainWindow::generatePlot(int p)
             delete p1;
         p1 = new QCustomPlot;
 
+        if(plot1Y.size() != ui->queueNumBox->value())
+        {
+            plot1Y = QVector< QVector<double> >(ui->queueNumBox->value());
+            for(int i = 0; i < ui->queueNumBox->value(); i++)
+                plot1Y[i] = QVector<double>(ui->simTimeBox->value() + 1);
+        }
         p1->xAxis->setLabel("Tick");
         p1->yAxis->setLabel(QString::fromUtf8("Liczba osób w kolejce"));
         for(int i = 0; i < ui->queueNumBox->value(); i++)
