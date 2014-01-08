@@ -71,20 +71,6 @@ void MainWindow::on_startStopButton_clicked()
 {
     if(currentTick == 0)
         updateParams();
-    /*if(!ui->interactCheckbox->isChecked())
-    {
-        if(p1 != NULL)
-            delete p1;
-        if(p2 != NULL)
-            delete p2;
-        if(p3 != NULL)
-            delete p3;
-        if(p4 != NULL)
-            delete p4;
-        if(p5 != NULL)
-            delete p5;
-        p1 = p2 = p3 = p4 = NULL;
-    }*/
 
     ui->log->append(ui->startStopButton->isChecked() ? "Start symulacji" : "Stop symulacji");
     /*
@@ -105,16 +91,6 @@ void MainWindow::on_startStopButton_clicked()
         //zamyka okienko advanced, just in case
         if(advanced != NULL)
             advanced->hide();
-
-        /*if(p1 != NULL)
-            delete p1;
-        if(p2 != NULL)
-            delete p2;
-        if(p3 != NULL)
-            delete p3;
-        if(p4 != NULL)
-            delete p4;
-        p1 = p2 = p3 = p4 = NULL;*/
 
         if(s == NULL)
         {
@@ -279,8 +255,6 @@ void MainWindow::simulate()
     ui->simProgressBar->setValue(100. * currentTick / ui->simTimeBox->value());
     ui->simProgressBar->setFormat(QString("Postep symulacji: %p% (%1/%2)").arg(currentTick).arg(ui->simTimeBox->value()));
 
-    /*if(currentTick == 1)
-        makePlots();*/
     if((currentTick % 100 == 0 || (ui->tickButton->isChecked())) || (timer->isActive() && (currentTick % 20 == 0)))
         updatePlots();
 
