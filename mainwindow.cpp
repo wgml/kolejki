@@ -410,7 +410,7 @@ void MainWindow::updatePlots(void)
     if(p5 != NULL && p5->isHidden())
     {
         delete p5;
-        p4 = NULL;
+        p5 = NULL;
     }
 
     if(p1 != NULL)
