@@ -13,8 +13,8 @@ unsigned nrand(double mean, double dev)
 
     double wartosc = nd(rng);
 
-	if(wartosc >= 0)
-		return (int) wartosc;
+    if(wartosc < 1 || wartosc > 2*mean)
+        return nrand(mean, dev);
 	else
-		return (int) (-wartosc);
+        return (int) wartosc;
 }

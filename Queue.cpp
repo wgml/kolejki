@@ -115,6 +115,8 @@ Client Queue::removeLast()
 	 * usuwa ostatni element z kolejki
 	 * i zwraca go
 	 */
+    if(this->queue.size() == 0)
+        return Client();
 	Client c = this->queue.back();
 	this->queue.pop_back();
 	return c;
