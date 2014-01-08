@@ -526,11 +526,17 @@ void MainWindow::updateParams()
     plot1Y = QVector< QVector<double> >(ui->queueNumBox->value());
     for(int i = 0; i < ui->queueNumBox->value(); i++)
         plot1Y[i] = QVector<double>(ui->simTimeBox->value() + 1);
-    makePlots();
 }
 
 void MainWindow::generatePlot(int p)
 {
+    ui->queueNumBox->setDisabled(true);
+    ui->ququeNumSlider->setDisabled(true);
+    ui->simTimeBox->setDisabled(true);
+    ui->simTimeSlider->setDisabled(true);
+    ui->advancedButton->setDisabled(true);
+    ui->defaultButton->setDisabled(true);
+
     ui->log->append(QString(QString::fromUtf8("Zażądano wykresu %1")).arg(p));
 
     QVector<double> p3Y(ui->simTimeBox->value() + 1);
