@@ -183,6 +183,7 @@ void MainWindow::on_defaultButton_clicked(void)
 {
     ui->queueNumBox->setValue(10);
     ui->simTimeBox->setValue(10000);
+    ui->interactCheckbox->setChecked(true);
     ui->log->append(QString::fromUtf8("Ustawiono wartości domyślne."));
 }
 
@@ -379,14 +380,6 @@ void MainWindow::updatePlots(void)
     ui->plot2->yAxis->setRange(0, totalClientsMax + 1);
     ui->plot2->replot();
 
-    unsigned curTick;
-    if(currentTick != 0)
-        curTick = currentTick;
-    else if(s != NULL)
-        curTick = s->getCurrentTIck();
-    else
-        curTick = 1;
-
     if(p1 != NULL && p1->isHidden())
     {
         delete p1;
@@ -413,57 +406,70 @@ void MainWindow::updatePlots(void)
         p5 = NULL;
     }
 
-    if(p1 != NULL)
+    unsigned curTick;
+    if(currentTick != 0)
+        curTick = currentTick;
+    else if(s != NULL)
+        curTick = s->getCurrentTIck();
+    else
+        curTick = 1;
+
+    if(ui->interactCheckbox->isChecked() || currentTick == ui->simTimeBox->value())
     {
-        for(int i = 0; i < ui->queueNumBox->value(); i++)
+
+
+        if(p1 != NULL)
         {
-            p1->graph(i)->setData(plotX, plot1Y[i]);
+            for(int i = 0; i < ui->queueNumBox->value(); i++)
+            {
+                p1->graph(i)->setData(plotX, plot1Y[i]);
+            }
+            p1->xAxis->setRange(0, curTick);
+            p1->yAxis->setRange(0, plot1MaxY);
+            p1->replot();
         }
-        p1->xAxis->setRange(0, curTick);
-        p1->yAxis->setRange(0, plot1MaxY);
-        p1->replot();
-    }
 
-    if(p2 != NULL)
-    {
-        p2->graph(0)->setData(plotX, plot2Y);
-        p2->xAxis->setRange(0, curTick);
-        p2->yAxis->setRange(0, totalClientsMax);
-        p2->replot();
-    }
-
-    if(p3 != NULL)
-    {
-        QVector<double> p3Y(curTick + 1);
-        for(int i = 0; i <= curTick; i++)
-            p3Y[i] = (1. * plot2Y[i]) / ui->queueNumBox->value();
-
-        p3->graph(0)->setData(plotX, p3Y);
-        p3->xAxis->setRange(0, curTick);
-        p3->yAxis->setRange(0, (1. * totalClientsMax) / ui->queueNumBox->value());
-        p3->replot();
-    }
-
-    if(p4 != NULL)
-    {
-        p4->graph(0)->setData(plotX, plot4Y);
-        p4->xAxis->setRange(0, curTick);
+        if(p2 != NULL)
         {
-           double max = 0;
-           for(unsigned i = 0; i < plot4Y.size(); i++)
-                if(max < plot4Y[i])
-                    max = plot4Y[i];
-
-            p4->yAxis->setRange(0, max);
+            p2->graph(0)->setData(plotX, plot2Y);
+            p2->xAxis->setRange(0, curTick);
+            p2->yAxis->setRange(0, totalClientsMax);
+            p2->replot();
         }
-        p4->replot();
-    }
 
-    if(p5 != NULL)
-    {
-        p5->graph(0)->setData(plotX, plot5Y);
-        p5->xAxis->setRange(0, curTick);
-        p5->replot();
+        if(p3 != NULL)
+        {
+            QVector<double> p3Y(curTick + 1);
+            for(int i = 0; i <= curTick; i++)
+                p3Y[i] = (1. * plot2Y[i]) / ui->queueNumBox->value();
+
+            p3->graph(0)->setData(plotX, p3Y);
+            p3->xAxis->setRange(0, curTick);
+            p3->yAxis->setRange(0, (1. * totalClientsMax) / ui->queueNumBox->value());
+            p3->replot();
+        }
+
+        if(p4 != NULL)
+        {
+            p4->graph(0)->setData(plotX, plot4Y);
+            p4->xAxis->setRange(0, curTick);
+            {
+               double max = 0;
+               for(unsigned i = 0; i < plot4Y.size(); i++)
+                    if(max < plot4Y[i])
+                        max = plot4Y[i];
+
+                p4->yAxis->setRange(0, max);
+            }
+            p4->replot();
+        }
+
+        if(p5 != NULL)
+        {
+            p5->graph(0)->setData(plotX, plot5Y);
+            p5->xAxis->setRange(0, curTick);
+            p5->replot();
+        }
     }
 }
 
@@ -489,11 +495,10 @@ void MainWindow::updateParams()
     ui->log->append(QString::fromUtf8("Otrzymano parametry: %1, %2, %3, %4, %5, %6, %7, %8.")
                     .arg(p1).arg(p2).arg(p3).arg(p4).arg(p5).arg(p6).arg(p7).arg(p8));
 
-    if(s == NULL)
-    {
-        s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
-        s->start();
-    }
+    if(s != NULL)
+        delete s;
+    s = new System(ui->queueNumBox->value(), ui->simTimeBox->value());
+    s->start();
     s->setParams(p1, p2, p3, p4, p5, p6, p7, p8);
 
     plotX = QVector<double>(ui->simTimeBox->value() + 1);

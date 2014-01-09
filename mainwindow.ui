@@ -28,7 +28,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_7">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
@@ -36,7 +36,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>0</width>
+          <width>13</width>
           <height>13</height>
          </size>
         </property>
@@ -45,14 +45,31 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QCheckBox" name="interactCheckbox">
-          <property name="text">
-           <string>Interaktywnie</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="interactCheckbox">
+            <property name="text">
+             <string>Interaktywnie</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <spacer name="horizontalSpacer_4">
@@ -477,6 +494,7 @@ p, li { white-space: pre-wrap; }
    <zorder>log</zorder>
    <zorder>simProgressBar</zorder>
    <zorder></zorder>
+   <zorder>horizontalSpacer_5</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
