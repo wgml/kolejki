@@ -55,6 +55,7 @@ private slots:
 
     void simulate(void);//symuluje jeden tick, updatuje wykresy?
 
+    void closeEvent(QCloseEvent *);
 };
 
 #endif // MAINWINDOW_H

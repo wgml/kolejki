@@ -6,7 +6,6 @@
 #include <QDesktopServices>
 #include <QTimer>
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -352,7 +351,7 @@ void MainWindow::makePlots()
     ui->plot2->yAxis->setLabel("Klienci w kolejkach");
     ui->plot2->xAxis->setRange(0, 1);
     ui->plot2->yAxis->setRange(0, 1);
-    ui->plot2->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->plot2->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
     ui->plot2->replot();
 
     plot1MaxY = 0;
@@ -440,7 +439,7 @@ void MainWindow::updatePlots(void)
         if(p3 != NULL)
         {
             QVector<double> p3Y(curTick + 1);
-            for(int i = 0; i <= curTick; i++)
+            for(unsigned i = 0; i <= curTick; i++)
                 p3Y[i] = (1. * plot2Y[i]) / ui->queueNumBox->value();
 
             p3->graph(0)->setData(plotX, p3Y);
@@ -455,7 +454,7 @@ void MainWindow::updatePlots(void)
             p4->xAxis->setRange(0, curTick);
             {
                double max = 0;
-               for(unsigned i = 0; i < plot4Y.size(); i++)
+               for(int i = 0; i < plot4Y.size(); i++)
                     if(max < plot4Y[i])
                         max = plot4Y[i];
 
@@ -551,8 +550,13 @@ void MainWindow::generatePlot(int p)
         {
             p1->addGraph();
             p1->graph(i)->setData(plotX, plot1Y[i]);
+            p1->graph(i)->setName(QString("Kolejka %1").arg(i + 1));
+            p1->graph(i)->setPen(QPen(QColor(qrand() % 256,
+                                             qrand() % 256,
+                                             qrand() % 256)));
         }
-        p1->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+
+        p1->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         p1->xAxis->setRange(0, curTick);
         p1->yAxis->setRange(0, plot1MaxY);
         p1->setGeometry(QRect(100, 100, 800, 200));
@@ -572,7 +576,7 @@ void MainWindow::generatePlot(int p)
 
         p2->addGraph();
         p2->graph(0)->setData(plotX, plot2Y);
-        p2->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+        p2->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         p2->xAxis->setRange(0, curTick);
         p2->yAxis->setRange(0, totalClientsMax);
         p2->setGeometry(QRect(100, 200, 800, 200));
@@ -592,7 +596,7 @@ void MainWindow::generatePlot(int p)
 
         p3->addGraph();
         p3->graph(0)->setData(plotX, p3Y);
-        p3->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+        p3->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         p3->xAxis->setRange(0, curTick);
         p3->yAxis->setRange(0, (1. * totalClientsMax) / ui->queueNumBox->value());
 
@@ -611,12 +615,12 @@ void MainWindow::generatePlot(int p)
 
         p4->addGraph();
         p4->graph(0)->setData(plotX, plot4Y);
-        p4->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+        p4->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         p4->xAxis->setRange(0, curTick);
 
         {
            double max = 0;
-           for(unsigned i = 0; i < plot4Y.size(); i++)
+           for(int i = 0; i < plot4Y.size(); i++)
                 if(max < plot4Y[i])
                     max = plot4Y[i];
 
@@ -636,7 +640,7 @@ void MainWindow::generatePlot(int p)
 
         p5->addGraph();
         p5->graph(0)->setData(plotX, plot5Y);
-        p5->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+        p5->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         p5->xAxis->setRange(0, curTick);
         p5->yAxis->setRange(0, ui->queueNumBox->value() + 1);
         p5->setGeometry(100, 500, 800, 200);
@@ -652,4 +656,21 @@ void MainWindow::showHelp()
 {
     ui->log->append(QString::fromUtf8("Ładowanie pliku pomocy."));
     QDesktopServices::openUrl(QUrl("help.pdf", QUrl::TolerantMode));
+}
+
+void MainWindow::closeEvent(QCloseEvent * event)
+{
+    if(p1 != NULL)
+        delete p1;
+    if(p2 != NULL)
+        delete p2;
+    if(p3 != NULL)
+        delete p3;
+    if(p4 != NULL)
+        delete p4;
+    if(p5 != NULL)
+        delete p5;
+    p1 = p2 = p3 = p4 = p5 = NULL;
+
+    event->accept();
 }

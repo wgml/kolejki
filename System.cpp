@@ -138,7 +138,7 @@ unsigned System::getQueueLength(unsigned q) const
 	 * zwraca ilosc czekajacych osob (wlacznie z obslugiwana)
 	 * w danej kolejce
 	 */
-	if(q >= this->queues.size() || q < 0)
+    if(q >= this->queues.size())
 		return 0;
 	else
 		return this->queues[q].getLength();
@@ -210,7 +210,7 @@ void System::simulate(bool oneTick)
 		 */
         unsigned newClients = urand() * (this->_constNewClients
             * exp(-0.5*(pow((this->tick - this->simulationTime/2.0)/(_constSpreadRate * this->simulationTime/2.0), 2))));
-		for(int i = 0; i < newClients; i++)
+        for(unsigned i = 0; i < newClients; i++)
 		{
 			unsigned k = this->chooseBestQueue();
             this->queues[k].add(Client(nrand(this->_constNormalMean, this->_constNormalSTD)));//TODO na sztywno
